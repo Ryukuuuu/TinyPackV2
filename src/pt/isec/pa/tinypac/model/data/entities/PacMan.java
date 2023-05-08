@@ -42,6 +42,15 @@ public class PacMan extends Entity{
             environment.addElement(this, y, x);
             this.setX(x);
             this.setY(y);
+            return;
+        }
+        if(this.getInventory() instanceof Warp){
+            Element e = environment.getWarpPair((Warp)this.getInventory());
+            environment.addElement((Element)this.getInventory(),currentPos.y(), currentPos.x());
+            this.setInventory(e);
+            environment.addElement(this,e.getY(),e.getX());
+            this.setY(e.getY());
+            this.setX(e.getX());
         }
     }
 

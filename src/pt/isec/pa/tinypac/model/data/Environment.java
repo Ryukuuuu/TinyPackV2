@@ -1,6 +1,7 @@
 package pt.isec.pa.tinypac.model.data;
 
 import pt.isec.pa.tinypac.model.data.blocks.GhostSpawn;
+import pt.isec.pa.tinypac.model.data.blocks.Warp;
 import pt.isec.pa.tinypac.model.data.entities.Entity;
 import pt.isec.pa.tinypac.model.data.entities.PacMan;
 import pt.isec.pa.tinypac.model.data.maze.Element;
@@ -108,6 +109,19 @@ public class Environment {
     }
 
     public List<Entity> getEntities(){return entities;}
+
+    public Element getWarpPair(Warp currentWarp){
+        Element elem;
+        for(int y=0;y<height;y++){
+            for(int x=0;x<width;x++){
+                elem = (Element) getElement(y,x);
+                if(elem instanceof Warp && !elem.equals(currentWarp)){
+                    return elem;
+                }
+            }
+        }
+        return null;
+    }
 
     public boolean evolve(){
         //System.out.println("Evolving[Env]");

@@ -2,6 +2,8 @@ package pt.isec.pa.tinypac.model.data.maze;
 
 import pt.isec.pa.tinypac.utils.Position;
 
+import java.util.Objects;
+
 public abstract class Element implements IMazeElement{
     private int x;
     private int y;
@@ -26,5 +28,13 @@ public abstract class Element implements IMazeElement{
     }
     public Position getXY(){
         return new Position(y,x);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Element element = (Element) o;
+        return x == element.x && y == element.y;
     }
 }

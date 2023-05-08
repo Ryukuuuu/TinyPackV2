@@ -7,7 +7,6 @@ import pt.isec.pa.tinypac.utils.Position;
 
 public class Blinky extends Ghost{
     private final char symbol= 'B';
-    private int orientation=0;
 
     public Blinky(Environment environment, int y, int x, Element startingElement){
         super(environment,y,x,startingElement);
@@ -21,5 +20,5 @@ public class Blinky extends Ghost{
     public char getSymbol(){return this.symbol;}
 
     @Override
-    public void evolve(){}
+    public void evolve(){} 
 }
