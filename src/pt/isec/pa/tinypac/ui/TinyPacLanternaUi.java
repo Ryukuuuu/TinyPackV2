@@ -1,0 +1,105 @@
+package pt.isec.pa.tinypac.ui;
+
+import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.TextCharacter;
+import com.googlecode.lanterna.TextColor;
+import com.googlecode.lanterna.input.KeyStroke;
+import com.googlecode.lanterna.input.KeyType;
+import com.googlecode.lanterna.screen.Screen;
+import com.googlecode.lanterna.screen.TerminalScreen;
+import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
+import pt.isec.pa.tinypac.gameEngine.IGameEngine;
+import pt.isec.pa.tinypac.gameEngine.IGameEngineEvolve;
+import pt.isec.pa.tinypac.model.fsm.GameContext;
+
+import java.io.IOException;
+import java.security.Key;
+
+public class TinyPacLanternaUi implements IGameEngineEvolve {
+    GameContext fsm;
+    Screen screen;
+
+    public TinyPacLanternaUi(GameContext gameContext) throws IOException {
+        this.fsm=gameContext;
+        TerminalSize terminalSize =new TerminalSize(29,35);
+        screen=new DefaultTerminalFactory().setInitialTerminalSize(terminalSize).createScreen();
+        screen.setCursorPosition(null);
+        show();
+    }
+
+    private void show() throws IOException{
+        char[][] maze = fsm.getEnvironmentManager().getEnvironment();
+        screen.startScreen();
+        for(int y=0;y<maze.length;y++){
+            for(int x=0;x<maze[0].length;x++){
+                TextColor bc = switch (maze[y][x]){
+                    case 'x' -> TextColor.ANSI.BLUE;
+                    case 'C' -> TextColor.ANSI.YELLOW_BRIGHT;
+                    case 'I' -> TextColor.ANSI.BLUE_BRIGHT;
+                    case 'P' -> TextColor.ANSI.MAGENTA;
+                    case 'c' -> TextColor.ANSI.GREEN;
+                    case 'B' -> TextColor.ANSI.RED;
+                    case 'f' -> TextColor.ANSI.CYAN;
+                    case 'W' -> TextColor.ANSI.RED_BRIGHT;
+                    default -> TextColor.ANSI.BLACK;
+                };
+                TextColor tc = switch (maze[y][x]){
+                    case 'x'->TextColor.ANSI.BLUE;
+                    case 'o'->TextColor.ANSI.WHITE;
+                    case 'O'->TextColor.ANSI.YELLOW;
+                    //case 'y'->TextColor.ANSI.WHITE;
+                    default -> TextColor.ANSI.BLACK;
+                };
+                screen.setCharacter(x,y, TextCharacter.fromCharacter(maze[y][x],tc,bc)[0]);
+            }
+        }
+        screen.refresh();
+    }
+
+    @Override
+    public void evolve(IGameEngine gameEngine,long currentTime){
+        try{
+            KeyStroke key = screen.pollInput();
+            show();
+            if(key!=null){
+                switch (key.getKeyType()){
+                    case ArrowLeft -> fsm.getEnvironmentManager().changePacmanDirection(1);
+                    case ArrowUp -> fsm.getEnvironmentManager().changePacmanDirection(2);
+                    case ArrowRight -> fsm.getEnvironmentManager().changePacmanDirection(3);
+                    case ArrowDown -> fsm.getEnvironmentManager().changePacmanDirection(4);
+                    case Escape -> {
+                        gameEngine.stop();
+                        screen.close();
+                    }
+                }
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    /*
+            show();
+            if(key!=null) {
+                if (key.getKeyType() == KeyType.ArrowLeft) {
+                    gameContext.getMazeManager().getPacman().setOrientation(1);
+                    System.out.println("Pacman going left");
+                } else if (key.getKeyType() == KeyType.ArrowUp) {
+                    gameContext.getMazeManager().getPacman().setOrientation(2);
+                    System.out.println("Pacman going up");
+                } else if (key.getKeyType() == KeyType.ArrowRight) {
+                    gameContext.getMazeManager().getPacman().setOrientation(3);
+                    System.out.println("Pacman going right");
+                } else if (key.getKeyType() == KeyType.ArrowDown) {
+                    gameContext.getMazeManager().getPacman().setOrientation(4);
+                    System.out.println("Pacman going down");
+                } else if (key.getKeyType() == KeyType.Escape) {
+                    gameengine.stop();
+                    screen.close();
+                } else {
+                    System.out.println("Quiting");
+                }
+            }
+        }catch (IOException e){}
+    }*/
+}
