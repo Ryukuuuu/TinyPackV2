@@ -1,7 +1,5 @@
 package pt.isec.pa.tinypac.model.data.entities.Ghosts.Command;
 
-import pt.isec.pa.tinypac.model.data.entities.ICommand;
-
 import java.util.ArrayDeque;
 import java.util.Deque;
 
@@ -33,5 +31,15 @@ public class CommandManager {
         return true;
     }
 
-    public
+    public boolean redo(){
+        if(redoCmds.isEmpty())
+            return false;
+        ICommand cmd = redoCmds.pop();
+        cmd.execute();
+        history.push(cmd);
+        return true;
+    }
+
+    public boolean hasUndo(){return history.size()>0;}
+    public boolean hasRedo(){return redoCmds.size()>0;}
 }

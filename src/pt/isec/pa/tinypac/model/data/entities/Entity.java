@@ -17,5 +17,4 @@ public abstract class Entity extends Element {
     public void setInventory(Element element){this.inventory=element;}
     public Element getInventory(){return inventory;}
 
-    abstract public void evolve();
 }

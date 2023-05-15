@@ -138,7 +138,7 @@ public class Environment {
         //System.out.println("Evolving[Env]");
         for(Entity ent:entities){
             if(ent instanceof PacMan){
-                ent.evolve();
+                ((PacMan) ent).evolve();
             }
         }
         return true;

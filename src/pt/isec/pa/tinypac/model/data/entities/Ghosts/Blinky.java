@@ -25,5 +25,11 @@ public class Blinky extends Ghost{
     }
 
     @Override
-    public void evolve(){} 
+    public boolean evolve(Position currentPos,int y,int x){
+        return true;
+    }
+    @Override
+    public boolean undoEvolve(Position position,int y,int x){
+        return true;
+    }
 }

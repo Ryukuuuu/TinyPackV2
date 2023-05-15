@@ -11,7 +11,6 @@ public class PacMan extends Entity{
     private int score=0;
 
 
-
     public PacMan(Environment environment,int y, int x,Element startingElement){
         super(environment,y,x,startingElement);
     }
@@ -23,7 +22,7 @@ public class PacMan extends Entity{
 
     public int getScore(){return score;}
 
-    public void eat(){
+    private void eat(){
         if(this.getInventory() instanceof Ball){
             score+=1;
             this.setInventory(new Blank(this.getY(),this.getX()));
@@ -34,7 +33,7 @@ public class PacMan extends Entity{
         }
     }
 
-    public void move(Position currentPos,int y,int x){
+    private void move(Position currentPos,int y,int x){
         Element elem=(Element)environment.getElement(y,x);
         if(!(elem instanceof Wall) && !(elem instanceof GhostPortal)) {
             environment.addElement((Element) this.getInventory(), currentPos.y(), currentPos.x());
@@ -58,8 +57,7 @@ public class PacMan extends Entity{
     @Override
     public char getSymbol(){return symbol;}
 
-    @Override
-    public void evolve(){
+    public boolean evolve(){
         //System.out.println("Evolve[Pac]");
         Position currentPos = this.getXY();
         int x=currentPos.x();
@@ -70,11 +68,12 @@ public class PacMan extends Entity{
             case 3-> x++;   //right
             case 4-> y++;   //down
             case 0 -> {     //neutral
-                return;
+                return false;
             }
         }
         //System.out.println("Going to -> {x="+x+",y="+y+"}---->" + this.getRotation());
         move(currentPos,y,x);
         eat();
+        return true;
     }
 }

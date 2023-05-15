@@ -1,10 +1,9 @@
 package pt.isec.pa.tinypac.model.data.entities.Ghosts.Command;
 
-import pt.isec.pa.tinypac.model.data.entities.ICommand;
+import pt.isec.pa.tinypac.model.data.entities.Ghosts.Ghost;
 
-import javax.swing.*;
-import java.util.Deque;
+public abstract class CommandAdapter implements ICommand{
+    protected Ghost receiver;
 
-public abstract class CommandAdapter{
-
+    protected CommandAdapter(Ghost receiver){this.receiver=receiver;}
 }

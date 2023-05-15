@@ -26,6 +26,13 @@ public class Inky extends Ghost{
         }
         return this.symbol;
     }
+
     @Override
-    public void evolve(){}
+    public boolean evolve(Position currentPos,int y,int x){
+        return true;
+    }
+    @Override
+    public boolean undoEvolve(Position position,int y,int x){
+        return true;
+    }
 }
