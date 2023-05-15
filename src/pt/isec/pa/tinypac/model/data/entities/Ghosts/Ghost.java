@@ -7,7 +7,9 @@ import pt.isec.pa.tinypac.utils.Position;
 
 public abstract class Ghost extends Entity {
 
+    private final char scaredGhost = 'S';   //if vulnerable==true use this
     private boolean vulnerable=false;
+    private boolean spawned=false;
     public Ghost(Environment environment, int y, int x, Element startingElement){
         super(environment,y,x,startingElement);
     }
@@ -15,9 +17,16 @@ public abstract class Ghost extends Entity {
     public boolean getVulnerable(){return vulnerable;}
     public void setVulnerable(boolean vulnerable){this.vulnerable=vulnerable;}
     public void changeVulnerable(){vulnerable=!vulnerable;}
+    public char getScaredSymbol(){return this.scaredGhost;}
+    public boolean getSpawned(){return spawned;}
+    public void setSpawned(boolean spawned){this.spawned=spawned;}
+    public void changeSpawned(){this.spawned = !this.spawned;}
 
     public void gotoPortal(){
         Position pos = environment.getGhostPortal();
+        if(pos == null){
+            return;
+        }
         Element portal = (Element) environment.getElement(pos.y(),pos.x());
 
         environment.addElement(this.getInventory(),this.getY(),this.getX());
@@ -25,6 +34,9 @@ public abstract class Ghost extends Entity {
         environment.addElement(this,pos.y(), pos.x());
         this.setY(pos.y());
         this.setX(pos.x());
+        this.setSpawned(true);
     }
+
     abstract public Position chooseNextPosition(Position currentPos);
+
 }

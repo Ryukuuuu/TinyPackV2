@@ -20,7 +20,12 @@ public class Inky extends Ghost{
     }
 
     @Override
-    public char getSymbol(){return this.symbol;}
+    public char getSymbol(){
+        if(this.getVulnerable()){
+            return this.getScaredSymbol();
+        }
+        return this.symbol;
+    }
     @Override
     public void evolve(){}
 }

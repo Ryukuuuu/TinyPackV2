@@ -198,8 +198,21 @@ public class EnvironmentManager{
         environment.setPacmanDirection(dir);
     }
 
+    private long calcRunTime(long currentTime){
+        return (currentTime-startingTime)/1000000000;
+    }
 
-    public void evolve(){
+    public void evolve(long currentTime){
+        if(debugCounter==0){
+            startingTime = currentTime;
+        }
+        runTime=calcRunTime(currentTime);
+        System.out.println("System running for: " + runTime + " seconds");
+
+        if(runTime==6){
+            environment.spawnGhost();
+        }
+
         //System.out.println("Evolving[EnvManager]");
         System.out.println("Debug counter: "+debugCounter++);
         if(environment==null)

@@ -3,6 +3,7 @@ package pt.isec.pa.tinypac.model.data;
 import pt.isec.pa.tinypac.model.data.blocks.GhostSpawn;
 import pt.isec.pa.tinypac.model.data.blocks.Warp;
 import pt.isec.pa.tinypac.model.data.entities.Entity;
+import pt.isec.pa.tinypac.model.data.entities.Ghosts.Ghost;
 import pt.isec.pa.tinypac.model.data.entities.PacMan;
 import pt.isec.pa.tinypac.model.data.maze.Element;
 import pt.isec.pa.tinypac.model.data.maze.IMazeElement;
@@ -121,6 +122,16 @@ public class Environment {
             }
         }
         return null;
+    }
+
+    public boolean spawnGhost(){
+        for(Entity e: entities){
+            if(e instanceof Ghost && !((Ghost) e).getSpawned()){
+                ((Ghost) e).gotoPortal();
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean evolve(){

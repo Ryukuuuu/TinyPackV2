@@ -17,6 +17,6 @@ public class GameContext implements IGameEngineEvolve {
 
     @Override
     public void evolve(IGameEngine gameEngine,long currentTime){
-        environmentManager.evolve();
+        environmentManager.evolve(currentTime);
     }
 }

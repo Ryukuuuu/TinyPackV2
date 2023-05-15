@@ -39,15 +39,18 @@ public class TinyPacLanternaUi implements IGameEngineEvolve {
                     case 'P' -> TextColor.ANSI.MAGENTA;
                     case 'c' -> TextColor.ANSI.GREEN;
                     case 'B' -> TextColor.ANSI.RED;
-                    case 'f' -> TextColor.ANSI.CYAN;
+                    case 'f' -> TextColor.ANSI.RED; //Spawned Fruit
                     case 'W' -> TextColor.ANSI.RED_BRIGHT;
+                    case 'S' -> TextColor.ANSI.BLUE_BRIGHT;
+                    case 'Y' -> TextColor.ANSI.WHITE;
+                    //case 'F' -> TextColor.ANSI.RED;
                     default -> TextColor.ANSI.BLACK;
                 };
                 TextColor tc = switch (maze[y][x]){
                     case 'x'->TextColor.ANSI.BLUE;
                     case 'o'->TextColor.ANSI.WHITE;
                     case 'O'->TextColor.ANSI.YELLOW;
-                    //case 'y'->TextColor.ANSI.WHITE;
+                    case 'S'->TextColor.ANSI.WHITE;
                     default -> TextColor.ANSI.BLACK;
                 };
                 screen.setCharacter(x,y, TextCharacter.fromCharacter(maze[y][x],tc,bc)[0]);
@@ -77,29 +80,4 @@ public class TinyPacLanternaUi implements IGameEngineEvolve {
             e.printStackTrace();
         }
     }
-
-    /*
-            show();
-            if(key!=null) {
-                if (key.getKeyType() == KeyType.ArrowLeft) {
-                    gameContext.getMazeManager().getPacman().setOrientation(1);
-                    System.out.println("Pacman going left");
-                } else if (key.getKeyType() == KeyType.ArrowUp) {
-                    gameContext.getMazeManager().getPacman().setOrientation(2);
-                    System.out.println("Pacman going up");
-                } else if (key.getKeyType() == KeyType.ArrowRight) {
-                    gameContext.getMazeManager().getPacman().setOrientation(3);
-                    System.out.println("Pacman going right");
-                } else if (key.getKeyType() == KeyType.ArrowDown) {
-                    gameContext.getMazeManager().getPacman().setOrientation(4);
-                    System.out.println("Pacman going down");
-                } else if (key.getKeyType() == KeyType.Escape) {
-                    gameengine.stop();
-                    screen.close();
-                } else {
-                    System.out.println("Quiting");
-                }
-            }
-        }catch (IOException e){}
-    }*/
 }

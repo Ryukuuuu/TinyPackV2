@@ -15,7 +15,12 @@ public class Pinky extends Ghost{
     }
 
     @Override
-    public char getSymbol(){return this.symbol;}
-    @Override
+    public char getSymbol() {
+        if (this.getVulnerable()) {
+            return this.getScaredSymbol();
+        }
+        return this.symbol;
+    }
+        @Override
     public void evolve(){}
 }

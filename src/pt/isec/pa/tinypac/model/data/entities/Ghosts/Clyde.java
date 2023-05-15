@@ -15,7 +15,12 @@ public class Clyde extends Ghost{
         return new Position(0,0);
     }
     @Override
-    public char getSymbol(){return this.symbol;}
+    public char getSymbol() {
+        if (this.getVulnerable()) {
+            return this.getScaredSymbol();
+        }
+        return this.symbol;
+    }
     @Override
     public void evolve(){}
 }
