@@ -28,11 +28,11 @@ public class Inky extends Ghost{
     }
 
     @Override
-    public boolean evolve(Position currentPos,int y,int x){
+    public boolean evolve(){
         return true;
     }
     @Override
-    public boolean undoEvolve(Position position,int y,int x){
+    public boolean undoEvolve(int y,int x){
         return true;
     }
 }

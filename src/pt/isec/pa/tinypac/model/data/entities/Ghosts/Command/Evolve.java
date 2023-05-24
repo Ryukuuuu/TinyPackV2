@@ -9,15 +9,15 @@ public class Evolve extends CommandAdapter{
     private int y;
     private int x;
 
-    public Evolve(Ghost receiver, Position currentPos, int y, int x){
+    public Evolve(Ghost receiver){
         super(receiver);
-        this.currentPos=currentPos;
-        this.y=y;
-        this.x=x;
+        this.currentPos=receiver.getXY();
     }
 
     @Override
-    public boolean execute(){return receiver.evolve(currentPos,y,x);}
+    public boolean execute(){
+        //System.out.println("Execute[Evolve]");
+        return receiver.evolve();}
     @Override
-    public boolean undo(){return true;}
+    public boolean undo(){return receiver.undoEvolve(y,x);}
 }

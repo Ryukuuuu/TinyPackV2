@@ -13,6 +13,7 @@ public class CommandManager {
     }
 
     public boolean invokeCommand(ICommand cmd){
+        //System.out.println("Invoke Command");
         redoCmds.clear();
         if(cmd.execute()){
             history.push(cmd);

@@ -3,7 +3,9 @@ package pt.isec.pa.tinypac.model.data;
 import pt.isec.pa.tinypac.model.data.blocks.GhostSpawn;
 import pt.isec.pa.tinypac.model.data.blocks.Warp;
 import pt.isec.pa.tinypac.model.data.entities.Entity;
+import pt.isec.pa.tinypac.model.data.entities.Ghosts.Blinky;
 import pt.isec.pa.tinypac.model.data.entities.Ghosts.Ghost;
+import pt.isec.pa.tinypac.model.data.entities.Ghosts.GhostManager;
 import pt.isec.pa.tinypac.model.data.entities.PacMan;
 import pt.isec.pa.tinypac.model.data.maze.Element;
 import pt.isec.pa.tinypac.model.data.maze.IMazeElement;
@@ -17,6 +19,8 @@ public class Environment {
     private int height,width;
     private Maze maze;
     private List<Entity> entities = new ArrayList<>();
+
+    private GhostManager blinkyManager;
 
     public Environment(int height,int width){
         this.height=height;
@@ -124,6 +128,14 @@ public class Environment {
         return null;
     }
 
+    public void setupGhostManager(Ghost ghost){
+        System.out.println("Blinky Manager SETUPPED");
+        if(ghost instanceof Blinky){
+            blinkyManager=new GhostManager(ghost);
+        }
+        // Adicionar os outros;
+    }
+
     public boolean spawnGhost(){
         for(Entity e: entities){
             if(e instanceof Ghost && !((Ghost) e).getSpawned()){
@@ -139,6 +151,13 @@ public class Environment {
         for(Entity ent:entities){
             if(ent instanceof PacMan){
                 ((PacMan) ent).evolve();
+            }
+            if(ent instanceof Blinky && ((Blinky) ent).getSpawned()){
+                if(((Blinky) ent).getVulnerable() && blinkyManager.hasUndo())
+                    blinkyManager.undo();
+                else
+                    blinkyManager.evolve();
+                //System.out.println("Evolve[EnvManager]");
             }
         }
         return true;

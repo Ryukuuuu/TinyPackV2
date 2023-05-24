@@ -30,7 +30,6 @@ public class EnvironmentManager{
     private long runTime;
     private Environment environment;
 
-
     private int debugCounter=0;
 
     public EnvironmentManager(){
@@ -158,6 +157,7 @@ public class EnvironmentManager{
                     Blinky blinky = new Blinky(environment,y,x,(Element)environment.getElement(y,x));
                     environment.addElement(blinky,y,x);
                     environment.addEntity(blinky);
+                    environment.setupGhostManager(blinky);
                 }
                 //Spawn Pinky
                 case 1->{

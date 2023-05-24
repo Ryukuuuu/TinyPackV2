@@ -1,15 +1,21 @@
 package pt.isec.pa.tinypac.model.data.entities.Ghosts.Command;
 
 import pt.isec.pa.tinypac.model.data.entities.Ghosts.Ghost;
+import pt.isec.pa.tinypac.utils.Position;
 
 public class UndoEvolve extends CommandAdapter{
 
-    public UndoEvolve(Ghost receiver){
+    private Position currentPos;
+    private int y;
+    private int x;
+    public UndoEvolve(Ghost receiver,int y,int x){
         super(receiver);
+        this.y=y;
+        this.x=x;
     }
 
     @Override
-    public boolean execute(){return true;}
+    public boolean execute(){return receiver.undoEvolve(y,x);}
     @Override
-    public boolean undo(){return true;}
+    public boolean undo(){return receiver.evolve();}
 }
