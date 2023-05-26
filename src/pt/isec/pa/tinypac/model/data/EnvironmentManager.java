@@ -209,7 +209,7 @@ public class EnvironmentManager{
         runTime=calcRunTime(currentTime);
         System.out.println("System running for: " + runTime + " seconds");
 
-        if(runTime==6){
+        if(runTime>6){
             environment.spawnGhost();
         }
 

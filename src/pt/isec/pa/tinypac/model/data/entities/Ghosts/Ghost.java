@@ -2,7 +2,9 @@ package pt.isec.pa.tinypac.model.data.entities.Ghosts;
 
 import pt.isec.pa.tinypac.model.data.Environment;
 import pt.isec.pa.tinypac.model.data.entities.Entity;
+import pt.isec.pa.tinypac.model.data.entities.PacMan;
 import pt.isec.pa.tinypac.model.data.maze.Element;
+import pt.isec.pa.tinypac.model.data.maze.IMazeElement;
 import pt.isec.pa.tinypac.utils.Position;
 
 import java.util.ArrayList;
@@ -41,13 +43,30 @@ public abstract class Ghost extends Entity {
         this.setSpawned(true);
     }
 
-    public void move(Position currentPos,Position nextPos){
+    public void die(){
+        this.changeVulnerable();
+        this.changeSpawned();
+    }
+
+    public boolean move(Position currentPos,Position nextPos){
         Element elem=(Element) environment.getElement(nextPos.y(), nextPos.x());
+        if(elem instanceof PacMan){
+            if(this.getVulnerable()) {
+                die();
+                return false;
+            }
+            else{
+                ((PacMan) elem).die();
+                return true;
+            }
+        }
+
         environment.addElement((Element) this.getInventory(), currentPos.y(), currentPos.x());
         this.setInventory(elem);
         environment.addElement(this, nextPos.y(), nextPos.x());
         this.setX(nextPos.x());
         this.setY(nextPos.y());
+        return true;
     }
 
     public ArrayList<Integer> getPossibleMoves(int previousRotation){
@@ -56,29 +75,65 @@ public abstract class Ghost extends Entity {
         char elem;
         //left
         elem = environment.getElement(currentPos.y(), currentPos.x()-1).getSymbol();
-        if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation!=1){
+        if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation!=3){
             possibleMoves.add(1);
         }
         //right
         elem = environment.getElement(currentPos.y(), currentPos.x()+1).getSymbol();
-        if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation!=3){
+        if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation!=1){
             possibleMoves.add(3);
         }
         //up
         elem = environment.getElement(currentPos.y()-1, currentPos.x()).getSymbol();
-        if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation!=2){
+        if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation!=4){
             possibleMoves.add(2);
         }
         //down
         elem = environment.getElement(currentPos.y()+1, currentPos.x()).getSymbol();
-        if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation!=4){
+        if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation!=2){
             possibleMoves.add(4);
         }
-        System.out.println("Pssible Moves-> " + possibleMoves);
+        //System.out.println("Pssible Moves-> " + possibleMoves);
         return possibleMoves;
     }
-
-    abstract public Position chooseNextPosition(Position currentPos);
+    public ArrayList<Position> getPossibleMoves(){
+        ArrayList<Position> possibleMoves = new ArrayList<>();
+        Position currentPos = this.getXY();
+        char elem;
+        for(int i=0;i<4;i++){
+            switch (i){
+                case 0->{   //left
+                    elem = environment.getElement(currentPos.y(), currentPos.x()-1).getSymbol();
+                    if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y'){
+                        possibleMoves.add(new Position(currentPos.y(), currentPos.x()-1));
+                    }
+                }
+                case 1->{   //right
+                    elem = environment.getElement(currentPos.y(), currentPos.x()+1).getSymbol();
+                    if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y'){
+                        possibleMoves.add(new Position(currentPos.y(), currentPos.x()+1));
+                    }
+                }
+                case 2->{   //up
+                    elem = environment.getElement(currentPos.y()-1, currentPos.x()).getSymbol();
+                    if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y'){
+                        possibleMoves.add(new Position(currentPos.y()-1, currentPos.x()));
+                    }
+                }
+                case 3->{   //down
+                    elem = environment.getElement(currentPos.y(), currentPos.x()).getSymbol();
+                    if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y'){
+                        possibleMoves.add(new Position(currentPos.y()+1, currentPos.x()));
+                    }
+                }
+                default -> {
+                    System.out.println("Se deer print é que não sei fazer 1 for.....");//////////////////////////////////////tirar o default
+                }
+            }
+        }
+        System.out.println("Possible Moves: "+possibleMoves);
+        return possibleMoves;
+    }
 
     abstract public boolean evolve();
     public boolean undoEvolve(int y,int x){

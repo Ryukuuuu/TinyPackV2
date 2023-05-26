@@ -11,10 +11,6 @@ public class Clyde extends Ghost{
 
 
     @Override
-    public Position chooseNextPosition(Position currentPos){
-        return new Position(0,0);
-    }
-    @Override
     public char getSymbol() {
         if (this.getVulnerable()) {
             return this.getScaredSymbol();

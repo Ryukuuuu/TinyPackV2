@@ -10,6 +10,7 @@ import pt.isec.pa.tinypac.model.data.entities.PacMan;
 import pt.isec.pa.tinypac.model.data.maze.Element;
 import pt.isec.pa.tinypac.model.data.maze.IMazeElement;
 import pt.isec.pa.tinypac.model.data.maze.Maze;
+import pt.isec.pa.tinypac.utils.Calculator;
 import pt.isec.pa.tinypac.utils.Position;
 
 import java.util.ArrayList;
@@ -140,17 +141,37 @@ public class Environment {
         for(Entity e: entities){
             if(e instanceof Ghost && !((Ghost) e).getSpawned()){
                 ((Ghost) e).gotoPortal();
+                ((Ghost) e).setSpawned(true);
                 return true;
             }
         }
         return false;
     }
 
+    public boolean respawnGhost(Ghost ghost){
+        Calculator calc = new Calculator();
+        Position[] pos = this.getGhostSpawn();
+        int y,x;
+
+        do {
+            y = calc.randomNumberBetweenValues(pos[0].y(), pos[1].y());
+            x = calc.randomNumberBetweenValues(pos[0].x(), pos[1].x());
+        }while(this.getElement(y,x).getSymbol() != 'y');
+
+        ghost.setVulnerable(false);
+        ghost.setSpawned(false);
+        this.addElement(ghost,y,x);
+
+        return true;
+    }
+
     public boolean evolve(){
         //System.out.println("Evolving[Env]");
         for(Entity ent:entities){
             if(ent instanceof PacMan){
-                ((PacMan) ent).evolve();
+                if(!((PacMan) ent).evolve()){
+                    return false;
+                }
             }
             if(ent instanceof Blinky && ((Blinky) ent).getSpawned()){
                 if(((Blinky) ent).getVulnerable() && blinkyManager.hasUndo())

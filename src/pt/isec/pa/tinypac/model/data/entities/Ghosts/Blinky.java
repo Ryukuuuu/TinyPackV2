@@ -40,14 +40,10 @@ public class Blinky extends Ghost{
 
     private boolean blocked(Position nextPos){
         char elem = environment.getElement(nextPos.y(), nextPos.x()).getSymbol();
-        System.out.println("Next element-> " + elem);
+        //System.out.println("Next element-> " + elem);
         return !(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y');
     }
 
-    @Override
-    public Position chooseNextPosition(Position currentPos){
-        return new Position(0,0);
-    }
     @Override
     public char getSymbol() {
         if (this.getVulnerable()) {
@@ -62,7 +58,7 @@ public class Blinky extends Ghost{
 
         Position nextPos = getNextPosition();
 
-        if(blocked(nextPos)){
+        if(blocked(nextPos) && this.getSpawned()){
             Calculator calc = new Calculator();
             int newRotation;
 
@@ -71,7 +67,8 @@ public class Blinky extends Ghost{
             System.out.println("DEBUG rotation: " + rotation);
             nextPos=getNextPosition();
         }
-        move(this.getXY(),nextPos);
+        if(!move(this.getXY(),nextPos))
+            return false;
         return true;
         //return false;
     }

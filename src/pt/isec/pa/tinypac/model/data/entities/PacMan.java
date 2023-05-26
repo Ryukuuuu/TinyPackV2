@@ -2,6 +2,7 @@ package pt.isec.pa.tinypac.model.data.entities;
 
 import pt.isec.pa.tinypac.model.data.Environment;
 import pt.isec.pa.tinypac.model.data.blocks.*;
+import pt.isec.pa.tinypac.model.data.entities.Ghosts.Ghost;
 import pt.isec.pa.tinypac.model.data.maze.Element;
 import pt.isec.pa.tinypac.utils.Position;
 
@@ -22,7 +23,11 @@ public class PacMan extends Entity{
 
     public int getScore(){return score;}
 
-    private void eat(){
+    public void die(){
+        environment.addElement(this.getInventory(),this.getY(),this.getX());
+    }
+
+    private boolean eat(){
         if(this.getInventory() instanceof Ball){
             score+=1;
             this.setInventory(new Blank(this.getY(),this.getX()));
@@ -31,6 +36,17 @@ public class PacMan extends Entity{
             score+=5;
             this.setInventory(new Blank(this.getY(),this.getX()));
         }
+        else if(this.getInventory() instanceof Ghost){
+            if(((Ghost) this.getInventory()).getVulnerable()){
+                score+=5;
+                this.setInventory(new Blank(this.getY(),this.getX()));
+            }
+            else{
+                die();
+                return false;
+            }
+        }
+        return true;
     }
 
     private void move(Position currentPos,int y,int x){
@@ -72,8 +88,11 @@ public class PacMan extends Entity{
             }
         }
         //System.out.println("Going to -> {x="+x+",y="+y+"}---->" + this.getRotation());
+        if(!eat()) {
+            return false;
+        }
         move(currentPos,y,x);
-        eat();
+
         return true;
     }
 }
