@@ -8,6 +8,8 @@ public abstract class Entity extends Element {
     protected Environment environment;
     private Element inventory;
 
+    private boolean spawned;
+
     protected Entity(Environment environment,int y,int x,Element startingElement){
         super(y,x);
         this.inventory=startingElement;
@@ -17,4 +19,6 @@ public abstract class Entity extends Element {
     public void setInventory(Element element){this.inventory=element;}
     public Element getInventory(){return inventory;}
 
+    public boolean getSpawned(){return spawned;}
+    public void setSpawned(boolean spawned){this.spawned=spawned;}
 }

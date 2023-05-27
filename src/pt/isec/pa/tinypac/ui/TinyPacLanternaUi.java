@@ -43,7 +43,6 @@ public class TinyPacLanternaUi implements IGameEngineEvolve {
                     case 'W' -> TextColor.ANSI.RED_BRIGHT;
                     case 'S' -> TextColor.ANSI.BLUE_BRIGHT;
                     case 'Y' -> TextColor.ANSI.WHITE;
-                    //case 'F' -> TextColor.ANSI.RED;
                     default -> TextColor.ANSI.BLACK;
                 };
                 TextColor tc = switch (maze[y][x]){

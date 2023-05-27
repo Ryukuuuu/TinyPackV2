@@ -1,7 +1,6 @@
 package pt.isec.pa.tinypac.model.data;
 
-import pt.isec.pa.tinypac.model.data.blocks.GhostSpawn;
-import pt.isec.pa.tinypac.model.data.blocks.Warp;
+import pt.isec.pa.tinypac.model.data.blocks.*;
 import pt.isec.pa.tinypac.model.data.entities.Entity;
 import pt.isec.pa.tinypac.model.data.entities.Ghosts.Blinky;
 import pt.isec.pa.tinypac.model.data.entities.Ghosts.Ghost;
@@ -18,6 +17,7 @@ import java.util.List;
 
 public class Environment {
     private int height,width;
+    private int score=0;
     private Maze maze;
     private List<Entity> entities = new ArrayList<>();
 
@@ -39,7 +39,7 @@ public class Environment {
         return maze.getMaze();
     }
 
-    public void addElement(Element element,int y,int x){maze.set(y,x,element);}
+    public void addElement(IMazeElement element,int y,int x){maze.set(y,x,element);}
 
     public Element getElementByPos(char elementSymbol,int y,int x){
         IMazeElement elem;
@@ -97,6 +97,7 @@ public class Environment {
 
     public void addEntity(Entity entity){
         entities.add(entity);
+        entity.setSpawned(true);
     }
 
     private PacMan getPacman(){
@@ -110,8 +111,12 @@ public class Environment {
         getPacman().setRotation(dir);
     }
 
-    public int getScore(){
+    /*public int getScore(){
         return getPacman().getScore();
+    }*/
+
+    public int getScore(){
+        return this.score;
     }
 
     public List<Entity> getEntities(){return entities;}
@@ -130,7 +135,7 @@ public class Environment {
     }
 
     public void setupGhostManager(Ghost ghost){
-        System.out.println("Blinky Manager SETUPPED");
+        //System.out.println("Blinky Manager SETUPPED");
         if(ghost instanceof Blinky){
             blinkyManager=new GhostManager(ghost);
         }
@@ -139,9 +144,10 @@ public class Environment {
 
     public boolean spawnGhost(){
         for(Entity e: entities){
-            if(e instanceof Ghost && !((Ghost) e).getSpawned()){
+            if(e instanceof Ghost && !((Ghost) e).getActive()){
                 ((Ghost) e).gotoPortal();
                 ((Ghost) e).setSpawned(true);
+                ((Ghost) e).setActive(true);
                 return true;
             }
         }
@@ -159,21 +165,80 @@ public class Environment {
         }while(this.getElement(y,x).getSymbol() != 'y');
 
         ghost.setVulnerable(false);
-        ghost.setSpawned(false);
+        ghost.setActive(false);
         this.addElement(ghost,y,x);
 
         return true;
     }
 
+    private boolean managePacManInventory(PacMan pacman){
+        IMazeElement inventory=pacman.getInventory();
+        if(inventory instanceof Ball){
+            score+=1;
+            pacman.setInventory(new Blank(pacman.getY(),pacman.getX()));
+        }
+        else if(inventory instanceof SuperBall){
+            score+=5;
+            pacman.setInventory(new Blank(pacman.getY(),pacman.getX()));
+        }
+        else if(inventory instanceof Ghost){
+            if(!((Ghost) inventory).getVulnerable()){
+                score+=5;
+                pacman.setInventory(new Blank(pacman.getY(),pacman.getX()));
+            }
+            else{
+                pacman.setSpawned(false);
+                addElement(inventory,pacman.getY(),pacman.getX());
+                return false;
+            }
+        }
+        return true;
+    }
+    private boolean manageGhostInventory(Ghost ghost){
+        IMazeElement inventory = ghost.getInventory();
+        if(inventory instanceof PacMan){
+            if(ghost.getVulnerable()){
+                addElement(inventory,ghost.getY(),ghost.getX());
+                ghost.setActive(false);
+                ghost.setSpawned(false);
+            }
+            else{
+                ((PacMan) inventory).setSpawned(false);
+                ghost.setInventory(new Blank(ghost.getY(), ghost.getX()));
+                //o jogo para
+            }
+        }
+        return true;
+    }
+    public int checkAllEntitiesInventory(){
+        for(Entity ent:entities){
+            if(ent instanceof PacMan){
+                if(managePacManInventory((PacMan)ent)){
+                    //terminar o jogo
+                    //retornar false
+                }
+            }
+            if(ent instanceof Ghost){
+                if(manageGhostInventory((Ghost)ent)){
+                    //terminar o jogo
+                    //retornar false
+                }
+            }
+        }
+        return 0;
+    }
+
     public boolean evolve(){
-        //System.out.println("Evolving[Env]");
+        //Se isto retornar -1 é que o PacMan morreu portanto é preciso mudar o estado e isso tudo
+        checkAllEntitiesInventory();
         for(Entity ent:entities){
             if(ent instanceof PacMan){
                 if(!((PacMan) ent).evolve()){
                     return false;
                 }
             }
-            if(ent instanceof Blinky && ((Blinky) ent).getSpawned()){
+            if(ent instanceof Blinky && ((Blinky) ent).getActive()){
+                //System.out.println("BLINKY-> " + ((Blinky) ent).getActive());
                 if(((Blinky) ent).getVulnerable() && blinkyManager.hasUndo())
                     blinkyManager.undo();
                 else

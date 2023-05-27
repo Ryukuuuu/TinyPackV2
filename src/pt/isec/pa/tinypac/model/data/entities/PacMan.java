@@ -9,7 +9,6 @@ import pt.isec.pa.tinypac.utils.Position;
 public class PacMan extends Entity{
     private final char symbol='C';
     private int rotation;   //0->Neutral|1->left|2->up|3->right|4->down
-    private int score=0;
 
 
     public PacMan(Environment environment,int y, int x,Element startingElement){
@@ -21,33 +20,11 @@ public class PacMan extends Entity{
         this.rotation=rotation;
     }
 
-    public int getScore(){return score;}
 
     public void die(){
         environment.addElement(this.getInventory(),this.getY(),this.getX());
     }
 
-    private boolean eat(){
-        if(this.getInventory() instanceof Ball){
-            score+=1;
-            this.setInventory(new Blank(this.getY(),this.getX()));
-        }
-        else if(this.getInventory() instanceof SuperBall){
-            score+=5;
-            this.setInventory(new Blank(this.getY(),this.getX()));
-        }
-        else if(this.getInventory() instanceof Ghost){
-            if(((Ghost) this.getInventory()).getVulnerable()){
-                score+=5;
-                this.setInventory(new Blank(this.getY(),this.getX()));
-            }
-            else{
-                die();
-                return false;
-            }
-        }
-        return true;
-    }
 
     private void move(Position currentPos,int y,int x){
         Element elem=(Element)environment.getElement(y,x);
@@ -84,15 +61,16 @@ public class PacMan extends Entity{
             case 3-> x++;   //right
             case 4-> y++;   //down
             case 0 -> {     //neutral
-                return false;
+                return true;
             }
         }
         //System.out.println("Going to -> {x="+x+",y="+y+"}---->" + this.getRotation());
-        if(!eat()) {
-            return false;
+        //if(!eat()) {
+        //    return false;
+            //}
+        if(this.getSpawned()){
+            move(currentPos,y,x);
         }
-        move(currentPos,y,x);
-
         return true;
     }
 }

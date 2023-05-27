@@ -13,7 +13,7 @@ public abstract class Ghost extends Entity {
 
     private final char scaredGhost = 'S';   //if vulnerable==true use this
     private boolean vulnerable=false;
-    private boolean spawned=false;
+    private boolean active=false;
     //private ArrayList<Position> posRecord = new ArrayList<>();
 
     public Ghost(Environment environment, int y, int x, Element startingElement){
@@ -24,9 +24,9 @@ public abstract class Ghost extends Entity {
     public void setVulnerable(boolean vulnerable){this.vulnerable=vulnerable;}
     public void changeVulnerable(){vulnerable=!vulnerable;}
     public char getScaredSymbol(){return this.scaredGhost;}
-    public boolean getSpawned(){return spawned;}
-    public void setSpawned(boolean spawned){this.spawned=spawned;}
-    public void changeSpawned(){this.spawned = !this.spawned;}
+    public boolean getActive(){return active;}
+    public void setActive(boolean active){this.active=active;}
+    public void changeActive(){this.active = !this.active;}
 
     public void gotoPortal(){
         Position pos = environment.getGhostPortal();
@@ -40,26 +40,17 @@ public abstract class Ghost extends Entity {
         environment.addElement(this,pos.y(), pos.x());
         this.setY(pos.y());
         this.setX(pos.x());
-        this.setSpawned(true);
+        this.setActive(true);
     }
 
     public void die(){
         this.changeVulnerable();
-        this.changeSpawned();
+        this.changeActive();
     }
 
     public boolean move(Position currentPos,Position nextPos){
         Element elem=(Element) environment.getElement(nextPos.y(), nextPos.x());
-        if(elem instanceof PacMan){
-            if(this.getVulnerable()) {
-                die();
-                return false;
-            }
-            else{
-                ((PacMan) elem).die();
-                return true;
-            }
-        }
+
 
         environment.addElement((Element) this.getInventory(), currentPos.y(), currentPos.x());
         this.setInventory(elem);
@@ -126,12 +117,9 @@ public abstract class Ghost extends Entity {
                         possibleMoves.add(new Position(currentPos.y()+1, currentPos.x()));
                     }
                 }
-                default -> {
-                    System.out.println("Se deer print é que não sei fazer 1 for.....");//////////////////////////////////////tirar o default
-                }
             }
         }
-        System.out.println("Possible Moves: "+possibleMoves);
+        //System.out.println("Possible Moves: "+possibleMoves);
         return possibleMoves;
     }
 

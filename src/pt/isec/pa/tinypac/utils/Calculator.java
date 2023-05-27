@@ -14,8 +14,6 @@ public class Calculator {
         return rand.nextInt(max);
     }
     public int randomNumberBetweenValues(int min,int max){
-        int debug = min+(int)(Math.random() * (max-min));
-        System.out.println("DEBUGGGGGG->"+debug);
-        return debug;
+        return min+(int)(Math.random() * (max-min));
     }
 }

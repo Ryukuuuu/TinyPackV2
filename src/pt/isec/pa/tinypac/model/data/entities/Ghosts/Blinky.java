@@ -57,14 +57,12 @@ public class Blinky extends Ghost{
         ArrayList<Integer> possibleMoves = getPossibleMoves(this.getRotation());
 
         Position nextPos = getNextPosition();
-
-        if(blocked(nextPos) && this.getSpawned()){
+        if(blocked(nextPos) && this.getActive()){
             Calculator calc = new Calculator();
             int newRotation;
 
             newRotation = possibleMoves.get(calc.randomNumberBetweenValues(0, possibleMoves.size()));   //calc.randomNumberBetweenValues(1,5);
             this.setRotation(newRotation);
-            System.out.println("DEBUG rotation: " + rotation);
             nextPos=getNextPosition();
         }
         if(!move(this.getXY(),nextPos))

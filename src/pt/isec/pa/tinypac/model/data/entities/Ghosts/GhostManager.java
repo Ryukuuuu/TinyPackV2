@@ -17,7 +17,8 @@ public class GhostManager {
 
     public boolean evolve(){
         //System.out.println("Evolve[GM]");
-        return cm.invokeCommand(new Evolve(ghost));}
+        return cm.invokeCommand(new Evolve(ghost));
+    }
 
     public boolean UndoEvolve(int y,int x){return cm.invokeCommand(new UndoEvolve(ghost,y,x));}
 

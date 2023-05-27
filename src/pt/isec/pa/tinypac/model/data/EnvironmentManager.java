@@ -209,12 +209,13 @@ public class EnvironmentManager{
         runTime=calcRunTime(currentTime);
         System.out.println("System running for: " + runTime + " seconds");
 
-        if(runTime>6){
+        if(runTime>3){
             environment.spawnGhost();
         }
 
         //System.out.println("Evolving[EnvManager]");
-        System.out.println("Debug counter: "+debugCounter++);
+        //System.out.println("Debug counter: "+debugCounter++);
+        debugCounter++;
         if(environment==null)
             return;
         if(!environment.evolve());
