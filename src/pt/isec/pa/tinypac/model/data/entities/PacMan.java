@@ -4,6 +4,7 @@ import pt.isec.pa.tinypac.model.data.Environment;
 import pt.isec.pa.tinypac.model.data.blocks.*;
 import pt.isec.pa.tinypac.model.data.entities.Ghosts.Ghost;
 import pt.isec.pa.tinypac.model.data.maze.Element;
+import pt.isec.pa.tinypac.utils.Calculator;
 import pt.isec.pa.tinypac.utils.Position;
 
 public class PacMan extends Entity{
@@ -51,7 +52,6 @@ public class PacMan extends Entity{
     public char getSymbol(){return symbol;}
 
     public boolean evolve(){
-        //System.out.println("Evolve[Pac]");
         Position currentPos = this.getXY();
         int x=currentPos.x();
         int y=currentPos.y();
@@ -64,10 +64,6 @@ public class PacMan extends Entity{
                 return true;
             }
         }
-        //System.out.println("Going to -> {x="+x+",y="+y+"}---->" + this.getRotation());
-        //if(!eat()) {
-        //    return false;
-            //}
         if(this.getSpawned()){
             move(currentPos,y,x);
         }

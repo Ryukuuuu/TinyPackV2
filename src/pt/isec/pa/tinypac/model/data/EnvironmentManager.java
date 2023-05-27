@@ -164,6 +164,7 @@ public class EnvironmentManager{
                     Pinky pinky = new Pinky(environment,y,x,(Element)environment.getElement(y,x));
                     environment.addElement(pinky,y,x);
                     environment.addEntity(pinky);
+                    environment.setupGhostManager(pinky);
                 }
                 //Spawn Inky
                 case 2->{

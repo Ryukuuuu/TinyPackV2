@@ -6,7 +6,8 @@ public class Calculator {
     public Calculator(){}
 
     public double distanceBetweenPoints(Position p1,Position p2){
-        return Math.sqrt(Math.pow((p1.y()+p2.y()),2)+Math.pow((p1.x()+p2.x()),2));
+        //System.out.println("P1: " + p1 + "\nP2: " + p2);
+        return Math.sqrt((p2.y() - p1.y()) * (p2.y() - p1.y()) + (p2.x() - p1.x()) * (p2.x() - p1.x()));
     }
 
     public int randomNumber(int max){

@@ -8,6 +8,7 @@ import pt.isec.pa.tinypac.utils.Calculator;
 import pt.isec.pa.tinypac.utils.Position;
 
 import java.util.ArrayList;
+import java.util.regex.PatternSyntaxException;
 
 public class Blinky extends Ghost{
     private final char symbol= 'B';
@@ -55,13 +56,12 @@ public class Blinky extends Ghost{
     @Override
     public boolean evolve(){
         ArrayList<Integer> possibleMoves = getPossibleMoves(this.getRotation());
-
         Position nextPos = getNextPosition();
         if(blocked(nextPos) && this.getActive()){
             Calculator calc = new Calculator();
             int newRotation;
 
-            newRotation = possibleMoves.get(calc.randomNumberBetweenValues(0, possibleMoves.size()));   //calc.randomNumberBetweenValues(1,5);
+            newRotation = possibleMoves.get(calc.randomNumberBetweenValues(0, possibleMoves.size()-1));   //calc.randomNumberBetweenValues(1,5);
             this.setRotation(newRotation);
             nextPos=getNextPosition();
         }
