@@ -8,4 +8,15 @@ public class NormalGame extends GameStateAdapter{
 
     public NormalGame(EnvironmentManager environmentManager, GameContext gameContext){super(environmentManager,gameContext);}
 
+    @Override
+    public boolean toInvincibleGame(){
+        setState(GameState.INVINCIBLE_GAME);
+        return true;
+    }
+
+    @Override
+    public boolean toEndGame(){
+        setState(GameState.END_GAME);
+        return true;
+    }
 }
