@@ -22,7 +22,6 @@ public class EnvironmentManager{
     private int currentLevel=1;
     private int lastLevel=1;
     private int score;
-    private int ballCounter=0;
     private int lives;
 
     private int activeGhosts=0;
@@ -52,7 +51,6 @@ public class EnvironmentManager{
                 return new Warp(y,x);
             }
             case 'o'->{
-                ballCounter++;
                 return new Ball(y,x);
             }
             case 'F'->{
@@ -62,7 +60,6 @@ public class EnvironmentManager{
                 return new PacManSpawn(y,x);
             }
             case 'O'->{
-                ballCounter++;
                 return new SuperBall(y,x);
             }
             case 'Y'->{
