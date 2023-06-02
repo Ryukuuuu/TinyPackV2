@@ -5,13 +5,11 @@ import pt.isec.pa.tinypac.utils.Position;
 
 public class Evolve extends CommandAdapter{
 
-    private Position currentPos;
     private int y;
     private int x;
 
     public Evolve(Ghost receiver){
         super(receiver);
-        this.currentPos=receiver.getXY();
     }
 
     @Override

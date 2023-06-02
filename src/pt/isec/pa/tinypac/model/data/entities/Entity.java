@@ -10,8 +10,8 @@ public abstract class Entity extends Element {
 
     private boolean spawned;
 
-    protected Entity(Environment environment,int y,int x,Element startingElement){
-        super(y,x);
+    protected Entity(Environment environment,Element startingElement){
+        super();
         this.inventory=startingElement;
         this.environment=environment;
     }

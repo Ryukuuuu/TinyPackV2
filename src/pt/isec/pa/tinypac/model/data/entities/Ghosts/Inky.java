@@ -11,7 +11,7 @@ public class Inky extends Ghost{
     private int rotation;
 
     public Inky(Environment environment,int y, int x,Element startingElement){
-        super(environment,y,x,(Element)environment.getElement(y,x));
+        super(environment,(Element)environment.getElement(y,x));
     }
 
     @Override

@@ -13,7 +13,7 @@ public class PacMan extends Entity{
 
 
     public PacMan(Environment environment,int y, int x,Element startingElement){
-        super(environment,y,x,startingElement);
+        super(environment,startingElement);
     }
 
     public int getRotation(){return this.rotation;}
@@ -23,7 +23,8 @@ public class PacMan extends Entity{
 
 
     public void die(){
-        environment.addElement(this.getInventory(),this.getY(),this.getX());
+        Position currentPos = environment.getElementPosition(this);
+        environment.addElement(this.getInventory(),currentPos.y(),currentPos.x());
     }
 
 
@@ -33,17 +34,14 @@ public class PacMan extends Entity{
             environment.addElement((Element) this.getInventory(), currentPos.y(), currentPos.x());
             this.setInventory(elem);
             environment.addElement(this, y, x);
-            this.setX(x);
-            this.setY(y);
             return;
         }
         if(this.getInventory() instanceof Warp){
             Element e = environment.getWarpPair((Warp)this.getInventory());
-            environment.addElement((Element)this.getInventory(),currentPos.y(), currentPos.x());
+            Position ePosition = environment.getElementPosition(e);
+            environment.addElement(this.getInventory(),currentPos.y(), currentPos.x());
             this.setInventory(e);
-            environment.addElement(this,e.getY(),e.getX());
-            this.setY(e.getY());
-            this.setX(e.getX());
+            environment.addElement(this,ePosition.y(),ePosition.x());
         }
     }
 
@@ -52,7 +50,10 @@ public class PacMan extends Entity{
     public char getSymbol(){return symbol;}
 
     public boolean evolve(){
-        Position currentPos = this.getXY();
+        Position currentPos = environment.getElementPosition(this);
+        if(currentPos==null){
+            return false;
+        }
         int x=currentPos.x();
         int y=currentPos.y();
         switch (this.getRotation()){

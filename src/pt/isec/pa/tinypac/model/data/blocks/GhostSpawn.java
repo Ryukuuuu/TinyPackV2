@@ -4,7 +4,7 @@ import pt.isec.pa.tinypac.model.data.maze.Element;
 
 public class GhostSpawn extends Element {
     private final char symbol='y';
-    public GhostSpawn(int y,int x){super(y,x);}
+    public GhostSpawn(){super();}
     @Override
     public char getSymbol(){return symbol;}
 }

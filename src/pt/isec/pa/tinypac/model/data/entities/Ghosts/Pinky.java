@@ -21,8 +21,8 @@ public class Pinky extends Ghost{
 
     private double distanceFromObjective=0;
 
-    public Pinky(Environment environment,int y, int x,Element starting){
-        super(environment,y,x,(Element)environment.getElement(y,x));
+    public Pinky(Environment environment,int y,int x,Element starting){
+        super(environment,(Element)environment.getElement(y,x));
     }
 
 
@@ -35,18 +35,19 @@ public class Pinky extends Ghost{
 
     private double getDistanceFromObjective(Position currentPos){
         String currentObjective = objectives[checkPoint];
+
         switch (currentObjective){
             case "tr"->{
-                return calculator.distanceBetweenPoints(this.getXY(),new Position(0,environment.getWidth()));
+                return calculator.distanceBetweenPoints(currentPos,new Position(0,environment.getWidth()));
             }
             case "dr"->{
-                return calculator.distanceBetweenPoints(this.getXY(),new Position(environment.getHeight(),environment.getWidth()));
+                return calculator.distanceBetweenPoints(currentPos,new Position(environment.getHeight(),environment.getWidth()));
             }
             case "tl"->{
-                return calculator.distanceBetweenPoints(this.getXY(),new Position(0,0));
+                return calculator.distanceBetweenPoints(currentPos,new Position(0,0));
             }
             case "dl"->{
-                return calculator.distanceBetweenPoints(this.getXY(),new Position(environment.getHeight(),0));
+                return calculator.distanceBetweenPoints(currentPos,new Position(environment.getHeight(),0));
             }
         }
         return 0;
@@ -63,10 +64,15 @@ public class Pinky extends Ghost{
 
     @Override
     public boolean evolve(){
-        Position nextPos;
-        ArrayList<Position> possiblePos = getPossibleMoves();
-        distanceFromObjective=getDistanceFromObjective(this.getXY());
-        System.out.println("Distance from objective-> " + distanceFromObjective);
+        Position currentPos = environment.getElementPosition(this);
+        ArrayList<Position> possiblePos = getPossibleMoves(this,getDistanceFromObjective(currentPos));
+
+        if(possiblePos.size()==0){
+            System.out.println("FDS");
+        }
+        if(possiblePos.size()==1){
+            move(currentPos,possiblePos.get(0));
+        }
         return true;
     }
 }

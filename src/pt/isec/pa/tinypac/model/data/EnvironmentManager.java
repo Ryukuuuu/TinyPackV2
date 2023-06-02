@@ -45,31 +45,31 @@ public class EnvironmentManager{
     private Element createElement(char symbol,int y,int x){
         switch (symbol){
             case 'x'->{
-                return new Wall(y,x);
+                return new Wall();
             }
             case 'W'->{
-                return new Warp(y,x);
+                return new Warp();
             }
             case 'o'->{
-                return new Ball(y,x);
+                return new Ball();
             }
             case 'F'->{
-                return new FruitSpawn(y,x);
+                return new FruitSpawn();
             }
             case 'M'->{
-                return new PacManSpawn(y,x);
+                return new PacManSpawn();
             }
             case 'O'->{
-                return new SuperBall(y,x);
+                return new SuperBall();
             }
             case 'Y'->{
-                return new GhostPortal(y,x);
+                return new GhostPortal();
             }
             case 'y'->{
-                return new GhostSpawn(y,x);
+                return new GhostSpawn();
             }
             default -> {
-                return new Blank(y,x);
+                return new Blank();
             }
         }
     }

@@ -50,6 +50,7 @@ public class TinyPacLanternaUi implements IGameEngineEvolve {
                     case 'o'->TextColor.ANSI.WHITE;
                     case 'O'->TextColor.ANSI.YELLOW;
                     case 'S'->TextColor.ANSI.WHITE;
+                    case 'y'->TextColor.ANSI.WHITE;
                     default -> TextColor.ANSI.BLACK;
                 };
                 screen.setCharacter(x,y, TextCharacter.fromCharacter(maze[y][x],tc,bc)[0]);

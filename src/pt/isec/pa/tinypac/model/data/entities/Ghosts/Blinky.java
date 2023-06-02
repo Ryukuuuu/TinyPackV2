@@ -15,7 +15,7 @@ public class Blinky extends Ghost{
     private int rotation=0;
 
     public Blinky(Environment environment, int y, int x, Element startingElement){
-        super(environment,y,x,startingElement);
+        super(environment,startingElement);
         rotation=1;
     }
 
@@ -24,7 +24,7 @@ public class Blinky extends Ghost{
     }
     public int getRotation(){return this.rotation;}
     private Position getNextPosition(){
-        Position currentPos = this.getXY();
+        Position currentPos = environment.getElementPosition(this);
         int x=currentPos.x();
         int y=currentPos.y();
         switch (this.getRotation()){
@@ -55,8 +55,9 @@ public class Blinky extends Ghost{
 
     @Override
     public boolean evolve(){
-        ArrayList<Integer> possibleMoves = getPossibleMoves(this.getRotation());
+        ArrayList<Integer> possibleMoves = getPossibleMoves(this.getRotation(),this);
         Position nextPos = getNextPosition();
+        Position currentPos = environment.getElementPosition(this);
         if(blocked(nextPos) && this.getActive()){
             Calculator calc = new Calculator();
             int newRotation;
@@ -65,7 +66,7 @@ public class Blinky extends Ghost{
             this.setRotation(newRotation);
             nextPos=getNextPosition();
         }
-        if(!move(this.getXY(),nextPos))
+        if(!move(currentPos,nextPos))
             return false;
         return true;
         //return false;

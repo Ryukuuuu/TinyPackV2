@@ -52,6 +52,17 @@ public class Environment {
         return null;
     }
 
+    public Position getElementPosition(Element elem){
+        for(int y=0;y<height;y++){
+            for(int x=0;x<width;x++){
+                if(maze.get(y,x) == elem){
+                    return new Position(y,x);
+                }
+            }
+        }
+        return null;
+    }
+
     public Position getPosElement(char elementSymbol){
         for(int y=0;y<height;y++){
             for(int x=0;x<width;x++){
@@ -174,22 +185,23 @@ public class Environment {
 
     private boolean managePacManInventory(PacMan pacman){
         IMazeElement inventory=pacman.getInventory();
+        Position p = this.getPosElement('C');
         if(inventory instanceof Ball){
             score+=1;
-            pacman.setInventory(new Blank(pacman.getY(),pacman.getX()));
+            pacman.setInventory(new Blank());
         }
         else if(inventory instanceof SuperBall){
             score+=5;
-            pacman.setInventory(new Blank(pacman.getY(),pacman.getX()));
+            pacman.setInventory(new Blank());
         }
         else if(inventory instanceof Ghost){
             if(!((Ghost) inventory).getVulnerable()){
                 score+=5;
-                pacman.setInventory(new Blank(pacman.getY(),pacman.getX()));
+                pacman.setInventory(new Blank());
             }
             else{
                 pacman.setSpawned(false);
-                addElement(inventory,pacman.getY(),pacman.getX());
+                addElement(inventory,p.y(),p.x());
                 return false;
             }
         }
@@ -197,15 +209,16 @@ public class Environment {
     }
     private boolean manageGhostInventory(Ghost ghost){
         IMazeElement inventory = ghost.getInventory();
+        Position ghostPosition = this.getPosElement(ghost.getSymbol());
         if(inventory instanceof PacMan){
             if(ghost.getVulnerable()){
-                addElement(inventory,ghost.getY(),ghost.getX());
+                addElement(inventory,ghostPosition.y(), ghostPosition.x());
                 ghost.setActive(false);
                 ghost.setSpawned(false);
             }
             else{
                 ((PacMan) inventory).setSpawned(false);
-                ghost.setInventory(new Blank(ghost.getY(), ghost.getX()));
+                ghost.setInventory(new Blank());
                 //o jogo para
             }
         }
