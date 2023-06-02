@@ -33,6 +33,25 @@ public class Pinky extends Ghost{
 
     public double getTolerance(){return tolerance;}
 
+    private Position getObjective(){
+        String currentObjective = objectives[checkPoint];
+        switch (currentObjective){
+            case "tr"->{
+                return new Position(0, environment.getWidth());
+            }
+            case "dr"->{
+                return new Position(environment.getHeight(),environment.getWidth());
+            }
+            case "tl"->{
+                return new Position(0,0);
+            }
+            case "dl"->{
+                return new Position(environment.getHeight(),0);
+            }
+        }
+        return null;
+    }
+
     private double getDistanceFromObjective(Position currentPos){
         String currentObjective = objectives[checkPoint];
 
@@ -53,6 +72,16 @@ public class Pinky extends Ghost{
         return 0;
     }
 
+    private boolean checkIfCheckPointReached(double currentDistanceFromObjective){
+        double distanceRequired = environment.getWidth()-(environment.getWidth()*tolerance);
+        System.out.println("Distance required to checkPoint-> " + distanceRequired);
+
+        if(currentDistanceFromObjective<distanceRequired){
+            checkPoint++;
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public char getSymbol() {
@@ -65,14 +94,18 @@ public class Pinky extends Ghost{
     @Override
     public boolean evolve(){
         Position currentPos = environment.getElementPosition(this);
-        ArrayList<Position> possiblePos = getPossibleMoves(this,getDistanceFromObjective(currentPos));
-
+        double currentDistanceFromObjective=getDistanceFromObjective(currentPos);
+        ArrayList<Position> possiblePos = getPossibleMoves(this,currentDistanceFromObjective,getObjective());
         if(possiblePos.size()==0){
             System.out.println("FDS");
         }
         if(possiblePos.size()==1){
             move(currentPos,possiblePos.get(0));
         }
+        else{
+            move(currentPos,getBestMove(possiblePos,getObjective(),currentDistanceFromObjective));
+        }
+        //checkIfCheckPointReached(currentDistanceFromObjective);
         return true;
     }
 }

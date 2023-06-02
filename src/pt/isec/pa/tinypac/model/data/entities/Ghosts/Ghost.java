@@ -5,6 +5,7 @@ import pt.isec.pa.tinypac.model.data.entities.Entity;
 import pt.isec.pa.tinypac.model.data.entities.PacMan;
 import pt.isec.pa.tinypac.model.data.maze.Element;
 import pt.isec.pa.tinypac.model.data.maze.IMazeElement;
+import pt.isec.pa.tinypac.utils.Calculator;
 import pt.isec.pa.tinypac.utils.Position;
 
 import java.util.ArrayList;
@@ -85,45 +86,76 @@ public abstract class Ghost extends Entity {
         //System.out.println("Pssible Moves-> " + possibleMoves);
         return possibleMoves;
     }
-    public ArrayList<Position> getPossibleMoves(Ghost ghost,double distance){
+    public ArrayList<Position> getPossibleMoves(Ghost ghost,double distance,Position objective){
         ArrayList<Position> possibleMoves = new ArrayList<>();
         Position currentPos = environment.getPosElement(ghost.getSymbol());
-        char elem;
+        Position newPos;
+        Calculator calc=new Calculator();
+        IMazeElement elem;
+        char elemChar;
         double newPosDistance;
+
         //System.out.println("\n\nCurrent Position->"+currentPos);
         for(int i=0;i<4;i++){
             switch (i){
                 case 0->{   //left
-                    elem = environment.getElement(currentPos.y(), currentPos.x()-1).getSymbol();
-
-                    if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y'){
+                    elem = environment.getElement(currentPos.y(), currentPos.x()-1);
+                    elemChar = elem.getSymbol();
+                    newPos = new Position(currentPos.y(), currentPos.x()-1);
+                    newPosDistance = calc.distanceBetweenPoints(newPos,objective);
+                    if(elemChar != 'x' && elemChar != 'W' && elemChar != 'Y' && elemChar != 'y' && !(elem instanceof Ghost) && newPosDistance<distance){
                         possibleMoves.add(new Position(currentPos.y(), currentPos.x()-1));
                     }
                 }
                 case 1->{   //right
-                    elem = environment.getElement(currentPos.y(), currentPos.x()+1).getSymbol();
-                    if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y'){
+                    elem = environment.getElement(currentPos.y(), currentPos.x()+1);
+                    elemChar = elem.getSymbol();
+                    newPos = new Position(currentPos.y(), currentPos.x()+1);
+                    newPosDistance = calc.distanceBetweenPoints(newPos,objective);
+                    if(elemChar != 'x' && elemChar != 'W' && elemChar != 'Y' && elemChar != 'y' && !(elem instanceof Ghost) && newPosDistance<distance){
                         possibleMoves.add(new Position(currentPos.y(), currentPos.x()+1));
                     }
                 }
                 case 2->{   //up
-                    elem = environment.getElement(currentPos.y()-1, currentPos.x()).getSymbol();
-                    System.out.println("UP element->" +elem);
-                    if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y'){
+                    elem = environment.getElement(currentPos.y()-1, currentPos.x());
+                    elemChar = elem.getSymbol();
+                    newPos = new Position(currentPos.y()-1, currentPos.x());
+                    newPosDistance = calc.distanceBetweenPoints(newPos,objective);
+                    if(elemChar != 'x' && elemChar != 'W' && elemChar != 'Y' && elemChar != 'y' && !(elem instanceof Ghost) && newPosDistance<distance){
                         possibleMoves.add(new Position(currentPos.y()-1, currentPos.x()));
                     }
                 }
                 case 3->{   //down
-                    elem = environment.getElement(currentPos.y()+1, currentPos.x()).getSymbol();
-                    System.out.println("Down element->"+elem);
-                    if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y'){
+                    elem = environment.getElement(currentPos.y()+1, currentPos.x());
+                    elemChar = elem.getSymbol();
+                    System.out.println("Down element->"+elem.getSymbol());
+                    newPos = new Position(currentPos.y()+1, currentPos.x());
+                    newPosDistance = calc.distanceBetweenPoints(newPos,objective);
+                    if(elemChar != 'x' && elemChar != 'W' && elemChar != 'Y' && elemChar != 'y' && !(elem instanceof Ghost) && newPosDistance<distance){
                         possibleMoves.add(new Position(currentPos.y()+1, currentPos.x()));
                     }
                 }
             }
         }
-        //System.out.println("Possible Moves: "+possibleMoves);
+        System.out.println("Possible Moves: "+possibleMoves);
         return possibleMoves;
+    }
+
+    public Position getBestMove(ArrayList<Position> possiblePositions,Position objective,double currentDistance){
+        Calculator calc = new Calculator();
+        double distance1=currentDistance,distance2;
+        Position bestPos=null;
+
+        for(int i=0;i<possiblePositions.size();i++){
+            distance2 = calc.distanceBetweenPoints(possiblePositions.get(i),objective);
+            if(distance1>distance2){
+                bestPos = possiblePositions.get(i);
+            }
+        }
+        if(bestPos == null){
+            System.out.println("Nao ha melhores posicoes[deu merda]");
+        }
+        return bestPos;
     }
 
     abstract public boolean evolve();
