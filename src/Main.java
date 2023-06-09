@@ -16,7 +16,7 @@ public class Main {
         GameEngine gameEngine = new GameEngine();
         gameEngine.registerClient(lanternaUi);
         gameEngine.registerClient(gameContext);
-        gameEngine.start(500);
+        gameEngine.start(250);
 
         gameEngine.waitForTheEnd();
 

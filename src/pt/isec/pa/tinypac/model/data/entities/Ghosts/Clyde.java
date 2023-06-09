@@ -7,7 +7,7 @@ import pt.isec.pa.tinypac.utils.Position;
 public class Clyde extends Ghost{
     private final char symbol='c';
 
-    public Clyde(Environment environment, int y, int x, Element startingElement){super(environment,startingElement);}
+    public Clyde(Environment environment, int y, int x, Element startingElement){super(environment,startingElement,1);}
 
 
     @Override

@@ -10,10 +10,13 @@ public abstract class Entity extends Element {
 
     private boolean spawned;
 
-    protected Entity(Environment environment,Element startingElement){
+    private int rotation;
+
+    protected Entity(Environment environment,Element startingElement,int rotation){
         super();
         this.inventory=startingElement;
         this.environment=environment;
+        this.rotation=rotation;
     }
 
     public void setInventory(Element element){this.inventory=element;}
@@ -21,4 +24,7 @@ public abstract class Entity extends Element {
 
     public boolean getSpawned(){return spawned;}
     public void setSpawned(boolean spawned){this.spawned=spawned;}
+
+    public void setRotation(int rotation){this.rotation=rotation;}
+    public int getRotation(){return this.rotation;}
 }

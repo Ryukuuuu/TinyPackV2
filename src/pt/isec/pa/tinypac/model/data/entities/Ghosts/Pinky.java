@@ -12,30 +12,31 @@ public class Pinky extends Ghost{
 
     private final String[] objectives = {"tr","dr","tl","dl"};
 
-    private Position lastPosition;
     private Calculator calculator=new Calculator();
     private int checkPoint=0; //Number of checkPoints reached
 
-    private double tolerance=0.15;  //Distance from objective to validate it
-    private int stuckCounter=0;
-
-    private double distanceFromObjective=0;
+    private double tolerance=0.75;  //Distance from objective to validate it
 
     public Pinky(Environment environment,int y,int x,Element starting){
-        super(environment,(Element)environment.getElement(y,x));
+        super(environment,(Element)environment.getElement(y,x),1);
     }
 
 
-    public void setCheckPoint(){checkPoint++;}
+    public void setCheckPoint(int checkPoint){this.checkPoint = checkPoint;}
     public int getCheckPoint(){return checkPoint;}
 
+    public void increaseCheckPoint(){
+        checkPoint++;
+        if(checkPoint==4){
+            checkPoint=0;
+        }
+    }
     public String getCurrentObjective(){return objectives[checkPoint];}
 
     public double getTolerance(){return tolerance;}
 
     private Position getObjective(){
-        String currentObjective = objectives[checkPoint];
-        switch (currentObjective){
+        switch (getCurrentObjective()){
             case "tr"->{
                 return new Position(0, environment.getWidth());
             }
@@ -72,16 +73,7 @@ public class Pinky extends Ghost{
         return 0;
     }
 
-    private boolean checkIfCheckPointReached(double currentDistanceFromObjective){
-        double distanceRequired = environment.getWidth()-(environment.getWidth()*tolerance);
-        System.out.println("Distance required to checkPoint-> " + distanceRequired);
 
-        if(currentDistanceFromObjective<distanceRequired){
-            checkPoint++;
-            return true;
-        }
-        return false;
-    }
 
     @Override
     public char getSymbol() {
@@ -93,19 +85,29 @@ public class Pinky extends Ghost{
 
     @Override
     public boolean evolve(){
-        Position currentPos = environment.getElementPosition(this);
-        double currentDistanceFromObjective=getDistanceFromObjective(currentPos);
-        ArrayList<Position> possiblePos = getPossibleMoves(this,currentDistanceFromObjective,getObjective());
-        if(possiblePos.size()==0){
-            System.out.println("FDS");
+        ArrayList<Position> possibleMoves= getPossiblePositions(this,this.getObjective());
+        Position nextPos=null;
+        Position currentPos=environment.getElementPosition(this);
+        if(possibleMoves.size()==0){
+            System.out.println("Inverter a marcha gl");
+            //TO DO
         }
-        if(possiblePos.size()==1){
-            move(currentPos,possiblePos.get(0));
+        else if(possibleMoves.size()==1){
+            nextPos=possibleMoves.get(0);
+            this.setRotation(calculateNextRotation(currentPos,nextPos));
+            System.out.println("Only 1 possible way");
         }
         else{
-            move(currentPos,getBestMove(possiblePos,getObjective(),currentDistanceFromObjective));
+            nextPos = getBestMoveFromArray(possibleMoves,this.getObjective());
+            this.setRotation(calculateNextRotation(currentPos,nextPos));
+            System.out.println("Choosing from more then 1 pos");
         }
-        //checkIfCheckPointReached(currentDistanceFromObjective);
+        if(nextPos!=null)
+            move(currentPos,nextPos);
+
+        if(checkIfCheckPointReached(getDistanceFromObjective(currentPos),tolerance)){
+            increaseCheckPoint();
+        }
         return true;
     }
 }
