@@ -21,7 +21,7 @@ public class Clyde extends Ghost{
             if(direction){  //down
                 for(int i=y;i<pacmanPos.y();i++){
                     if(environment.getElement(i,x) instanceof Wall){
-                        System.out.println("Wall between[DOWN]");
+                        //System.out.println("Wall between[DOWN]");
                         return true;
                     }
                 }
@@ -30,7 +30,7 @@ public class Clyde extends Ghost{
             else{           //up
                 for(int i=y;i>pacmanPos.y();i--){
                     if(environment.getElement(i,x) instanceof Wall){
-                        System.out.println("Wall between[UP]");
+                        //System.out.println("Wall between[UP]");
                         return true;
                     }
                 }
@@ -41,7 +41,7 @@ public class Clyde extends Ghost{
             if(direction){  //right
                 for(int i=x;i< pacmanPos.x();i++){
                     if(environment.getElement(y,i) instanceof Wall){
-                        System.out.println("Wall between[RIGHT]");
+                        //System.out.println("Wall between[RIGHT]");
                         return true;
                     }
                 }
@@ -50,7 +50,7 @@ public class Clyde extends Ghost{
             else{           //left
                 for(int i=x;x> pacmanPos.x();i--){
                     if(environment.getElement(y,i) instanceof Wall){
-                        System.out.println("Wall between[LEFT]");
+                        //System.out.println("Wall between[LEFT]");
                         return true;
                     }
                 }
@@ -62,10 +62,10 @@ public class Clyde extends Ghost{
     private boolean checkForPacman(Position currentPos){
         Position pacmanPos = environment.getPosElement('C');
         int x,y;
-        System.out.println("Pacman pos->"+pacmanPos+"\nMy pos->"+currentPos);
+        //System.out.println("Pacman pos->"+pacmanPos+"\nMy pos->"+currentPos);
         x=currentPos.x()-pacmanPos.x();
         y=currentPos.y()- pacmanPos.y();
-        System.out.println("\n-------------------------------------------\nX=="+x+"\nY=="+y+"\n-------------------------------------------\n");
+        //System.out.println("\n-------------------------------------------\nX=="+x+"\nY=="+y+"\n-------------------------------------------\n");
 
         if(x==0){//mesma coluna
             if(y<0){
