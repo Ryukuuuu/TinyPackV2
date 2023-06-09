@@ -22,6 +22,7 @@ public class Environment {
     private GhostManager blinkyManager;
     private GhostManager pinkyManager;
     private GhostManager inkyManager;
+    private GhostManager clydeManager;
 
     public Environment(int height,int width){
         this.height=height;
@@ -152,7 +153,9 @@ public class Environment {
         if(ghost instanceof Inky){
             inkyManager=new GhostManager(ghost);
         }
-        // Adicionar os outros;
+        if(ghost instanceof Clyde){
+            clydeManager=new GhostManager(ghost);
+        }
     }
 
     public boolean spawnGhost(){
@@ -274,6 +277,14 @@ public class Environment {
                     inkyManager.undo();
                 else
                     inkyManager.evolve();
+                //System.out.println("Evolve[EnvManager]");
+            }
+            if(ent instanceof Clyde && ((Clyde) ent).getActive()){
+                //System.out.println("BLINKY-> " + ((Blinky) ent).getActive());
+                if(((Clyde) ent).getVulnerable() && clydeManager.hasUndo())
+                    clydeManager.undo();
+                else
+                    clydeManager.evolve();
                 //System.out.println("Evolve[EnvManager]");
             }
         }

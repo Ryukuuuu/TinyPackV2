@@ -12,10 +12,9 @@ import java.util.regex.PatternSyntaxException;
 
 public class Blinky extends Ghost{
     private final char symbol= 'B';
-    //private int rotation=0;
 
-    public Blinky(Environment environment, int y, int x, Element startingElement){
-        super(environment,startingElement,1);
+    public Blinky(Environment environment, int y, int x){
+        super(environment,(Element) environment.getElement(y,x));
     }
 
 

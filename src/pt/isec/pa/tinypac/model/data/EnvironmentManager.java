@@ -151,7 +151,7 @@ public class EnvironmentManager{
             switch (i){
                 //Spawn Blinky
                 case 0->{
-                    Blinky blinky = new Blinky(environment,y,x,(Element)environment.getElement(y,x));
+                    Blinky blinky = new Blinky(environment,y,x);
                     environment.addElement(blinky,y,x);
                     environment.addEntity(blinky);
                     environment.setupGhostManager(blinky);
@@ -172,9 +172,10 @@ public class EnvironmentManager{
                 }
                 //Spawn Clyde
                 case 3->{
-                    Clyde clyde = new Clyde(environment,y,x,(Element)environment.getElement(y,x));
+                    Clyde clyde = new Clyde(environment,y,x);
                     environment.addElement(clyde,y,x);
                     environment.addEntity(clyde);
+                    environment.setupGhostManager(clyde);
                 }
             }
         }
@@ -206,7 +207,7 @@ public class EnvironmentManager{
             startingTime = currentTime;
         }
         runTime=calcRunTime(currentTime);
-        System.out.println("System running for: " + runTime + " seconds");
+        //System.out.println("System running for: " + runTime + " seconds");
 
         if(runTime>3){
             environment.spawnGhost();
@@ -219,6 +220,6 @@ public class EnvironmentManager{
             return;
         if(!environment.evolve());
             //gameEngine.stop();
-        System.out.println("Score: "+environment.getScore());
+        //System.out.println("Score: "+environment.getScore());
     }
 }

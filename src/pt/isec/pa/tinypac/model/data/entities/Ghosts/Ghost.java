@@ -17,8 +17,8 @@ public abstract class Ghost extends Entity {
     private boolean active=false;
     //private ArrayList<Position> posRecord = new ArrayList<>();
 
-    public Ghost(Environment environment, Element startingElement,int rotation){
-        super(environment,startingElement,rotation);
+    public Ghost(Environment environment, Element startingElement){
+        super(environment,startingElement,1);
     }
 
     public boolean getVulnerable(){return vulnerable;}
@@ -126,7 +126,7 @@ public abstract class Ghost extends Entity {
                 case 3->{   //down
                     elem = environment.getElement(currentPos.y()+1, currentPos.x());
                     elemChar = elem.getSymbol();
-                    System.out.println("Down element->"+elem.getSymbol());
+                    //System.out.println("Down element->"+elem.getSymbol());
                     newPos = new Position(currentPos.y()+1, currentPos.x());
                     newPosDistance = calc.distanceBetweenPoints(newPos,objective);
                     if(elemChar != 'x' && elemChar != 'W' && elemChar != 'Y' && elemChar != 'y' && !(elem instanceof Ghost) && this.getRotation()!=2){
@@ -135,7 +135,7 @@ public abstract class Ghost extends Entity {
                 }
             }
         }
-        System.out.println("Possible Moves: "+possibleMoves);
+        //System.out.println("Possible Moves: "+possibleMoves);
         return possibleMoves;
     }
 
@@ -167,12 +167,12 @@ public abstract class Ghost extends Entity {
             if(bestPos==null){
                 bestPos = possiblePos.get(i);
                 bestDistance = calc.distanceBetweenPoints(bestPos,objective);
-                System.out.println("------------------------\nbesDistance initialized\n-------------------");
+                //System.out.println("------------------------\nbesDistance initialized\n-------------------");
             }
             else{
                 distance=calc.distanceBetweenPoints(possiblePos.get(i),objective);
                 if(distance<bestDistance){
-                    System.out.println("Found a best distance");
+                    //System.out.println("Found a best distance");
                     bestPos = possiblePos.get(i);
                     bestDistance = calc.distanceBetweenPoints(bestPos,objective);
                 }
@@ -203,47 +203,7 @@ public abstract class Ghost extends Entity {
         return !(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y');
     }
 
-    public int calculateNextRotation(Position currentPos,Position nextPos){
-        int y,x;
 
-        y = currentPos.y() - nextPos.y();
-        x = currentPos.x() - nextPos.x();
-
-        switch (y){
-            case 1-> {
-                System.out.println("Rotating up");
-                return 2;
-            }
-            case -1->{
-                System.out.println("Rotating down");
-                return 4;
-            }
-            default -> {
-                System.out.println("Not rotating up/down");
-            }
-        }
-        switch (x){
-            case 1->{
-                System.out.println("Rotating left");
-                return 1;
-            }
-            case -1->{
-                System.out.println("Rotating right");
-                return 3;
-            }
-            default -> {
-                System.out.println("Not rotating left/right");
-            }
-        }
-        System.out.println("ERROR[calculateNextRotation]");
-        return 0;
-    }
-
-    public boolean checkIfCheckPointReached(double currentDistanceFromObjective,double tolerance){
-        double distanceRequired = environment.getWidth()-(environment.getWidth()*tolerance);
-        //System.out.println("Distance required to checkPoint-> " + distanceRequired);
-        return currentDistanceFromObjective<distanceRequired;
-    }
 
     abstract public boolean evolve();
     public boolean undoEvolve(int y,int x){

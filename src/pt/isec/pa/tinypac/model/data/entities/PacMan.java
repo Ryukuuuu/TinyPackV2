@@ -9,16 +9,11 @@ import pt.isec.pa.tinypac.utils.Position;
 
 public class PacMan extends Entity{
     private final char symbol='C';
-    //private int rotation;   //0->Neutral|1->left|2->up|3->right|4->down
 
 
     public PacMan(Environment environment,int y, int x,Element startingElement){
         super(environment,startingElement,0);
     }
-
-    //public int getRotation(){return this.rotation;}
-    //public void setRotation(int rotation){this.rotation=rotation;}
-
 
     public void die(){
         Position currentPos = environment.getElementPosition(this);

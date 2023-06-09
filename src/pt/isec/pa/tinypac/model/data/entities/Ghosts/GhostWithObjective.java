@@ -15,7 +15,7 @@ public abstract class GhostWithObjective extends Ghost{
     private int checkPoint=0;
 
     public GhostWithObjective(Environment environment, Element starting){
-        super(environment,starting,1);
+        super(environment,starting);
     }
 
     public void setObjectives(String[] objectives){
@@ -70,24 +70,53 @@ public abstract class GhostWithObjective extends Ghost{
         }
     }
 
+    public boolean checkIfCheckPointReached(double currentDistanceFromObjective,double tolerance){
+        double distanceRequired = environment.getWidth()-(environment.getWidth()*tolerance);
+        //System.out.println("Distance required to checkPoint-> " + distanceRequired);
+        return currentDistanceFromObjective<distanceRequired;
+    }
+
+    public int calculateNextRotation(Position currentPos,Position nextPos){
+        int y,x;
+
+        y = currentPos.y() - nextPos.y();
+        x = currentPos.x() - nextPos.x();
+
+        switch (y){
+            case 1-> {
+                return 2;
+            }
+            case -1->{
+                return 4;
+            }
+            default -> {
+            }
+        }
+        switch (x){
+            case 1->{
+                return 1;
+            }
+            case -1->{
+                return 3;
+            }
+        }
+        return 0;
+    }
     @Override
     public boolean evolve(){
         ArrayList<Position> possibleMoves= getPossiblePositions(this,this.getObjective());
         Position nextPos=null;
         Position currentPos=environment.getElementPosition(this);
         if(possibleMoves.size()==0){
-            System.out.println("Inverter a marcha gl");
             //TO DO
         }
         else if(possibleMoves.size()==1){
             nextPos=possibleMoves.get(0);
             this.setRotation(calculateNextRotation(currentPos,nextPos));
-            //System.out.println("Only 1 possible way");
         }
         else{
             nextPos = getBestMoveFromArray(possibleMoves,this.getObjective());
             this.setRotation(calculateNextRotation(currentPos,nextPos));
-            //System.out.println("Choosing from more then 1 pos");
         }
         if(nextPos!=null)
             move(currentPos,nextPos);
