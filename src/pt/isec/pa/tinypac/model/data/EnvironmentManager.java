@@ -158,16 +158,17 @@ public class EnvironmentManager{
                 }
                 //Spawn Pinky
                 case 1->{
-                    Pinky pinky = new Pinky(environment,y,x,(Element)environment.getElement(y,x));
+                    Pinky pinky = new Pinky(environment,y,x);
                     environment.addElement(pinky,y,x);
                     environment.addEntity(pinky);
                     environment.setupGhostManager(pinky);
                 }
                 //Spawn Inky
                 case 2->{
-                    Inky inky = new Inky(environment,y,x,(Element)environment.getElement(y,x));
+                    Inky inky = new Inky(environment,y,x);
                     environment.addElement(inky,y,x);
                     environment.addEntity(inky);
+                    environment.setupGhostManager(inky);
                 }
                 //Spawn Clyde
                 case 3->{
