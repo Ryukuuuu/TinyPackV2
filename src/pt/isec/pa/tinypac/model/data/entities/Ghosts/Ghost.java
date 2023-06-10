@@ -13,17 +13,14 @@ import java.util.ArrayList;
 public abstract class Ghost extends Entity {
 
     private final char scaredGhost = 'S';   //if vulnerable==true use this
-    private boolean vulnerable=false;
     private boolean active=false;
     //private ArrayList<Position> posRecord = new ArrayList<>();
 
     public Ghost(Environment environment, Element startingElement){
         super(environment,startingElement,2);
+        setVulnerable(false);
     }
 
-    public boolean getVulnerable(){return vulnerable;}
-    public void setVulnerable(boolean vulnerable){this.vulnerable=vulnerable;}
-    public void changeVulnerable(){vulnerable=!vulnerable;}
     public char getScaredSymbol(){return this.scaredGhost;}
     public boolean getActive(){return active;}
     public void setActive(boolean active){this.active=active;}

@@ -72,6 +72,11 @@ public class TinyPacLanternaUi implements IGameEngineEvolve {
                         gameEngine.stop();
                         screen.close();
                     }
+                    default->{
+                        if(key.getCharacter() == 'p'){
+                            fsm.toPause();
+                        }
+                    }
                 }
             }
         }catch (IOException e){
@@ -81,9 +86,7 @@ public class TinyPacLanternaUi implements IGameEngineEvolve {
 
     public void WaitForUserInput(){
         try {
-            System.out.println("Before");
             KeyStroke key = screen.readInput();
-            System.out.println("After");
         }
         catch (IOException e){
             e.printStackTrace();
@@ -110,7 +113,10 @@ public class TinyPacLanternaUi implements IGameEngineEvolve {
                     getUserInput(key,gameEngine);
                 }
                 case PAUSE_GAME -> {
-                    System.out.println("Pause state");
+                    gameEngine.pause();
+                    WaitForUserInput();
+
+                    gameEngine.resume();
                 }
                 case END_GAME -> {
                     System.out.println("EndGameState");

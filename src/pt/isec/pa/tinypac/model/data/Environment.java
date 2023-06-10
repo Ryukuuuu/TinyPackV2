@@ -196,6 +196,7 @@ public class Environment {
         }
         else if(inventory instanceof SuperBall){
             score+=5;
+
             pacman.setInventory(new Blank());
         }
         else if(inventory instanceof Ghost){
