@@ -28,19 +28,19 @@ public class Blinky extends Ghost{
 
     @Override
     public boolean evolve(){
-        ArrayList<Integer> possibleMoves = getPossibleMoves(this.getRotation(),this);
-        Position nextPos = getNextPosition();
-        Position currentPos = environment.getElementPosition(this);
-        if(blocked(nextPos) && this.getActive()){
-            Calculator calc = new Calculator();
-            int newRotation;
-
-            newRotation = possibleMoves.get(calc.randomNumberBetweenValues(0, possibleMoves.size()-1));   //calc.randomNumberBetweenValues(1,5);
-            this.setRotation(newRotation);
-            nextPos=getNextPosition();
+        if(this.getActive()) {
+            ArrayList<Integer> possibleMoves = getPossibleMoves(this.getRotation(), this);
+            Position nextPos = getNextPosition();
+            Position currentPos = environment.getElementPosition(this);
+            if (blocked(nextPos)) {
+                Calculator calc = new Calculator();
+                int newRotation;
+                newRotation = possibleMoves.get(calc.randomNumberBetweenValues(0, possibleMoves.size() - 1));   //calc.randomNumberBetweenValues(1,5);
+                this.setRotation(newRotation);
+                nextPos = getNextPosition();
+            }
+            move(currentPos, nextPos);
         }
-        if(!move(currentPos,nextPos))
-            return false;
         return true;
         //return false;
     }

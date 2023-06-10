@@ -108,7 +108,7 @@ public abstract class GhostWithObjective extends Ghost{
         Position nextPos=null;
         Position currentPos=environment.getElementPosition(this);
         if(possibleMoves.size()==0){
-            //TO DO
+            reverseRotation(this.getRotation());
         }
         else if(possibleMoves.size()==1){
             nextPos=possibleMoves.get(0);

@@ -12,6 +12,4 @@ public class EndGame extends GameStateAdapter{
         setState(GameState.WAITING_FOR_START);
         return true;
     }
-
-
 }

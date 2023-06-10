@@ -18,7 +18,7 @@ public abstract class Ghost extends Entity {
     //private ArrayList<Position> posRecord = new ArrayList<>();
 
     public Ghost(Environment environment, Element startingElement){
-        super(environment,startingElement,1);
+        super(environment,startingElement,2);
     }
 
     public boolean getVulnerable(){return vulnerable;}
@@ -44,9 +44,10 @@ public abstract class Ghost extends Entity {
         this.setActive(true);
     }
 
-    public void die(){
-        this.changeVulnerable();
-        this.changeActive();
+    public void die(Position currentPos){
+        this.setVulnerable(false);
+        this.setActive(false);
+        environment.addElement(this.getInventory(),currentPos.y(),currentPos.x());
     }
 
     public boolean move(Position currentPos,Position nextPos){
@@ -60,28 +61,36 @@ public abstract class Ghost extends Entity {
     public ArrayList<Integer> getPossibleMoves(int previousRotation,Ghost ghost){
         ArrayList<Integer> possibleMoves = new ArrayList<>();
         Position currentPos = environment.getPosElement(ghost.getSymbol());
+        IMazeElement element;
         char elem;
         //left
-        elem = environment.getElement(currentPos.y(), currentPos.x()-1).getSymbol();
-        if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation!=3){
+        element=environment.getElement(currentPos.y(),currentPos.x()-1);
+        elem = element.getSymbol();
+        if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation!=3 && !(element instanceof Ghost)){
             possibleMoves.add(1);
         }
         //right
+        element=environment.getElement(currentPos.y(),currentPos.x()+1);
         elem = environment.getElement(currentPos.y(), currentPos.x()+1).getSymbol();
-        if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation!=1){
+        if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation!=1 && !(element instanceof Ghost)){
             possibleMoves.add(3);
         }
         //up
+        element=environment.getElement(currentPos.y()-1,currentPos.x());
         elem = environment.getElement(currentPos.y()-1, currentPos.x()).getSymbol();
-        if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation!=4){
+        if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation!=4 && !(element instanceof Ghost)){
             possibleMoves.add(2);
         }
         //down
+        element=environment.getElement(currentPos.y()+1,currentPos.x());
         elem = environment.getElement(currentPos.y()+1, currentPos.x()).getSymbol();
-        if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation!=2){
+        if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation!=2 && !(element instanceof Ghost)){
             possibleMoves.add(4);
         }
         //System.out.println("Pssible Moves-> " + possibleMoves);
+        if(possibleMoves.size()==0){
+            possibleMoves.add(reverseRotation(previousRotation));
+        }
         return possibleMoves;
     }
     public ArrayList<Position> getPossiblePositions(Ghost ghost,Position objective){
@@ -195,6 +204,16 @@ public abstract class Ghost extends Entity {
             }
         }
         return new Position(y,x);
+    }
+
+    public int reverseRotation(int rotation){
+        switch (rotation){
+            case 1->{return 3;}
+            case 2->{return 4;}
+            case 3->{return 1;}
+            case 4->{return 2;}
+        }
+        return 0;
     }
 
     public boolean blocked(Position nextPos){

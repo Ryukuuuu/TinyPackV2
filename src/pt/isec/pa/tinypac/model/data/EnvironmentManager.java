@@ -24,7 +24,8 @@ public class EnvironmentManager{
     private int score;
     private int lives;
 
-    private int activeGhosts=0;
+    private long ghostRespawnTimer=0;
+    private int inactiveGhosts=4;
     private long startingTime=0;
     private long runTime;
     private Environment environment;
@@ -201,6 +202,7 @@ public class EnvironmentManager{
     private long calcRunTime(long currentTime){
         return (currentTime-startingTime)/1000000000;
     }
+    private long timePassed(long currentTime,long reference){return (reference-startingTime)/1000000000;}
 
     public void evolve(long currentTime){
         if(debugCounter==0){

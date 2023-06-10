@@ -199,11 +199,14 @@ public class Environment {
             pacman.setInventory(new Blank());
         }
         else if(inventory instanceof Ghost){
+            ((Ghost) inventory).die(p);     //DEBUG
+            pacman.setInventory(new Blank());//DEBUG
             if(!((Ghost) inventory).getVulnerable()){
                 score+=5;
                 pacman.setInventory(new Blank());
             }
             else{
+
                 pacman.setSpawned(false);
                 addElement(inventory,p.y(),p.x());
                 return false;
@@ -248,21 +251,13 @@ public class Environment {
 
     public boolean evolve(){
         //Se isto retornar -1 é que o PacMan morreu portanto é preciso mudar o estado e isso tudo
-        checkAllEntitiesInventory();
         for(Entity ent:entities){
             if(ent instanceof PacMan){
                 if(!((PacMan) ent).evolve()){
                     return false;
                 }
             }
-            if(ent instanceof Blinky && ((Blinky) ent).getActive()){
-                //System.out.println("BLINKY-> " + ((Blinky) ent).getActive());
-                if(((Blinky) ent).getVulnerable() && blinkyManager.hasUndo())
-                    blinkyManager.undo();
-                else
-                    blinkyManager.evolve();
-                //System.out.println("Evolve[EnvManager]");
-            }
+            checkAllEntitiesInventory();
             if(ent instanceof Pinky && ((Pinky) ent).getActive()){
                 //System.out.println("BLINKY-> " + ((Blinky) ent).getActive());
                 if(((Pinky) ent).getVulnerable() && pinkyManager.hasUndo())
@@ -285,6 +280,14 @@ public class Environment {
                     clydeManager.undo();
                 else
                     clydeManager.evolve();
+                //System.out.println("Evolve[EnvManager]");
+            }
+            if(ent instanceof Blinky && ((Blinky) ent).getActive()){
+                //System.out.println("BLINKY-> " + ((Blinky) ent).getActive());
+                if(((Blinky) ent).getVulnerable() && blinkyManager.hasUndo())
+                    blinkyManager.undo();
+                else
+                    blinkyManager.evolve();
                 //System.out.println("Evolve[EnvManager]");
             }
         }

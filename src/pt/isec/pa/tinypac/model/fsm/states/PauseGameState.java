@@ -3,9 +3,9 @@ package pt.isec.pa.tinypac.model.fsm.states;
 import pt.isec.pa.tinypac.model.data.EnvironmentManager;
 import pt.isec.pa.tinypac.model.fsm.GameContext;
 
-public class InvincibleGame extends GameStateAdapter{
+public class PauseGameState extends GameStateAdapter{
 
-    public InvincibleGame(EnvironmentManager environmentManager, GameContext gameContext){super(environmentManager,gameContext);}
+    public PauseGameState(EnvironmentManager environmentManager, GameContext gameContext){super(environmentManager,gameContext);}
 
     @Override
     public boolean toNormalGame(){
@@ -15,13 +15,7 @@ public class InvincibleGame extends GameStateAdapter{
 
     @Override
     public boolean toInvincibleGame(){
-        setState(GameState.PAUSE_GAME);
-        return true;
-    }
-
-    @Override
-    public boolean toEndGame(){
-        setState(GameState.END_GAME);
+        setState(GameState.INVINCIBLE_GAME);
         return true;
     }
 }

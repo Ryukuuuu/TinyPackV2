@@ -63,6 +63,9 @@ public class Clyde extends Ghost{
         Position pacmanPos = environment.getPosElement('C');
         int x,y;
         //System.out.println("Pacman pos->"+pacmanPos+"\nMy pos->"+currentPos);
+        if(pacmanPos==null){
+            return false;
+        }
         x=currentPos.x()-pacmanPos.x();
         y=currentPos.y()- pacmanPos.y();
         //System.out.println("\n-------------------------------------------\nX=="+x+"\nY=="+y+"\n-------------------------------------------\n");

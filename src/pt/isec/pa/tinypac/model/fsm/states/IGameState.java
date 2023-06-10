@@ -5,5 +5,6 @@ public interface IGameState {
     boolean toWaitingForStart();
     boolean toNormalGame();
     boolean toInvincibleGame();
+    boolean toPause();
     boolean toEndGame();
 }

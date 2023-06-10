@@ -23,5 +23,7 @@ public class GameStateAdapter implements IGameState{
     @Override
     public boolean toInvincibleGame(){return false;}
     @Override
+    public boolean toPause(){return false;}
+    @Override
     public boolean toEndGame(){return false;}
 }

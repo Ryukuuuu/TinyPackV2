@@ -15,6 +15,12 @@ public class NormalGame extends GameStateAdapter{
     }
 
     @Override
+    public boolean toPause(){
+        setState(GameState.PAUSE_GAME);
+        return true;
+    }
+
+    @Override
     public boolean toEndGame(){
         setState(GameState.END_GAME);
         return true;
