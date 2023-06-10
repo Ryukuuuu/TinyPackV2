@@ -24,4 +24,7 @@ public class InvincibleGame extends GameStateAdapter{
         setState(GameState.END_GAME);
         return true;
     }
+
+    @Override
+    public GameState getState(){return GameState.INVINCIBLE_GAME;}
 }

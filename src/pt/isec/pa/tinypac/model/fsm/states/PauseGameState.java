@@ -18,4 +18,6 @@ public class PauseGameState extends GameStateAdapter{
         setState(GameState.INVINCIBLE_GAME);
         return true;
     }
+    @Override
+    public GameState getState(){return GameState.PAUSE_GAME;}
 }

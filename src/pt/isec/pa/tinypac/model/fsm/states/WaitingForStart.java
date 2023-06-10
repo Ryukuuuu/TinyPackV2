@@ -12,4 +12,7 @@ public class WaitingForStart extends GameStateAdapter{
         setState(GameState.NORMAL_GAME);
         return true;
     }
+
+    @Override
+    public GameState getState(){return GameState.WAITING_FOR_START;}
 }

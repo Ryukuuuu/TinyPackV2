@@ -4,7 +4,7 @@ import pt.isec.pa.tinypac.model.data.Environment;
 import pt.isec.pa.tinypac.model.data.EnvironmentManager;
 import pt.isec.pa.tinypac.model.fsm.GameContext;
 
-public class GameStateAdapter implements IGameState{
+abstract public class GameStateAdapter implements IGameState{
 
     protected GameContext context;
     protected EnvironmentManager environmentManager;

@@ -7,4 +7,6 @@ public interface IGameState {
     boolean toInvincibleGame();
     boolean toPause();
     boolean toEndGame();
+
+    GameState getState();
 }

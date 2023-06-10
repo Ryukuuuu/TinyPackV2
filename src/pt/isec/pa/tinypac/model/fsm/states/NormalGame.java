@@ -25,4 +25,6 @@ public class NormalGame extends GameStateAdapter{
         setState(GameState.END_GAME);
         return true;
     }
+    @Override
+    public GameState getState(){return GameState.NORMAL_GAME;}
 }

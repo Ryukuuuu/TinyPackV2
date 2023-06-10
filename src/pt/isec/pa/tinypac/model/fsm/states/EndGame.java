@@ -12,4 +12,9 @@ public class EndGame extends GameStateAdapter{
         setState(GameState.WAITING_FOR_START);
         return true;
     }
+
+    @Override
+    public GameState getState(){
+        return GameState.END_GAME;
+    }
 }

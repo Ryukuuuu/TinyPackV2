@@ -18,6 +18,7 @@ import java.security.Key;
 public class TinyPacLanternaUi implements IGameEngineEvolve {
     GameContext fsm;
     Screen screen;
+    private boolean input=false;
 
     public TinyPacLanternaUi(GameContext gameContext) throws IOException {
         this.fsm=gameContext;
@@ -59,13 +60,10 @@ public class TinyPacLanternaUi implements IGameEngineEvolve {
         screen.refresh();
     }
 
-    @Override
-    public void evolve(IGameEngine gameEngine,long currentTime){
-        try{
-            KeyStroke key = screen.pollInput();
-            show();
-            if(key!=null){
-                switch (key.getKeyType()){
+    private void getUserInput(KeyStroke key,IGameEngine gameEngine){
+        try {
+            if (key != null) {
+                switch (key.getKeyType()) {
                     case ArrowLeft -> fsm.getEnvironmentManager().changePacmanDirection(1);
                     case ArrowUp -> fsm.getEnvironmentManager().changePacmanDirection(2);
                     case ArrowRight -> fsm.getEnvironmentManager().changePacmanDirection(3);
@@ -74,6 +72,48 @@ public class TinyPacLanternaUi implements IGameEngineEvolve {
                         gameEngine.stop();
                         screen.close();
                     }
+                }
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void WaitForUserInput(){
+        try {
+            System.out.println("Before");
+            KeyStroke key = screen.readInput();
+            System.out.println("After");
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void evolve(IGameEngine gameEngine,long currentTime){
+        try{
+            KeyStroke key = screen.pollInput();
+            show();
+            switch (fsm.getState()){
+                case WAITING_FOR_START -> {
+                    gameEngine.pause();
+                    WaitForUserInput();
+                    gameEngine.resume();
+                    fsm.toNormalGame();
+                }
+                case NORMAL_GAME -> {
+                    getUserInput(key,gameEngine);
+                }
+                case INVINCIBLE_GAME -> {
+                    System.out.println("Invincible");
+                    getUserInput(key,gameEngine);
+                }
+                case PAUSE_GAME -> {
+                    System.out.println("Pause state");
+                }
+                case END_GAME -> {
+                    System.out.println("EndGameState");
                 }
             }
         }catch (IOException e){
