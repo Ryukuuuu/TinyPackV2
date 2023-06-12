@@ -9,15 +9,22 @@ import pt.isec.pa.tinypac.utils.Position;
 
 public class PacMan extends Entity{
     private final char symbol='C';
+    private boolean alive=true;
 
 
     public PacMan(Environment environment,int y, int x,Element startingElement){
         super(environment,startingElement,0);
     }
 
+    public boolean getAlive(){return alive;}
+    public void setAlive(boolean alive){this.alive=alive;}
+
     public void die(){
-        Position currentPos = environment.getElementPosition(this);
-        environment.addElement(this.getInventory(),currentPos.y(),currentPos.x());
+        //Position currentPos = environment.getElementPosition(this);
+        //environment.addElement(this.getInventory(),currentPos.y(),currentPos.x());
+        setAlive(false);
+        setSpawned(false);
+        System.out.println("\n-------------------------------\nPAcman died\n-------------------------------\n");
     }
 
 

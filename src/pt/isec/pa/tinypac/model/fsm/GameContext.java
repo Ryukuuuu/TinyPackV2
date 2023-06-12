@@ -7,30 +7,31 @@ import pt.isec.pa.tinypac.model.fsm.states.GameState;
 import pt.isec.pa.tinypac.model.fsm.states.IGameState;
 import pt.isec.pa.tinypac.model.fsm.states.WaitingForStart;
 
-public class GameContext implements IGameEngineEvolve {
+public class GameContext {
     EnvironmentManager environmentManager;
     private IGameState state;
 
     public GameContext(){
         environmentManager=new EnvironmentManager();
-        state= new WaitingForStart(environmentManager,this);
+        //state= new WaitingForStart(environmentManager,this);
+        state = GameState.WAITING_FOR_START.createState(environmentManager,this);
     }
     public EnvironmentManager getEnvironmentManager() {
         return environmentManager;
     }
     public GameState getState(){return state.getState();}
 
-    public void setState(IGameState state){this.state=state;}
+    public void changeState(IGameState state){this.state=state;}
 
-    public boolean toWaitingForStart(){ return state.toWaitingForStart();}
-    public boolean toNormalGame(){return state.toNormalGame();}
-    public boolean toInvincibleState(){return state.toInvincibleGame();}
-    public boolean toPause(){return state.toPause();}
-    public boolean toEndGame(){return state.toEndGame();}
+    public boolean pacmanAlive(){return state.pacmanAlive();}
+    public boolean gameOver(){return state.gameOver();}
+    public boolean superBallActive(){return state.superBallActive();}
+    public boolean gotInput(){return state.gotInput();}
+    public boolean levelOver(){return state.gotInput();}
+    public boolean pausedGame(){return state.pausedGame();}
 
-
-    @Override
-    public void evolve(IGameEngine gameEngine,long currentTime){
+    public void evolve(long currentTime){
+        state.evolve();
         environmentManager.evolve(currentTime);
     }
 }

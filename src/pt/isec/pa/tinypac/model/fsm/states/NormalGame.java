@@ -9,22 +9,55 @@ public class NormalGame extends GameStateAdapter{
     public NormalGame(EnvironmentManager environmentManager, GameContext gameContext){super(environmentManager,gameContext);}
 
     @Override
-    public boolean toInvincibleGame(){
-        setState(GameState.INVINCIBLE_GAME);
+    public boolean pacmanAlive(){
+        if(environmentManager.getPacmanAlive()){
+            changeState(GameState.END_GAME);
+        }
         return true;
     }
 
     @Override
-    public boolean toPause(){
-        setState(GameState.PAUSE_GAME);
+    public boolean gameOver(){
+        if(environmentManager.getGameOver()){
+            changeState(GameState.END_GAME);
+        }
         return true;
     }
 
     @Override
-    public boolean toEndGame(){
-        setState(GameState.END_GAME);
+    public boolean levelOver(){
+        if(environmentManager.getLevelOver()){
+            changeState(GameState.WAITING_FOR_START);
+        }
         return true;
     }
+
+    @Override
+    public boolean superBallActive(){
+        if(environmentManager.getSuperBallEaten()){
+            changeState(GameState.INVINCIBLE_GAME);
+        }
+        return true;
+    }
+    @Override
+    public boolean pausedGame(){
+        if(environmentManager.getPausedGame()){
+            changeState(GameState.PAUSE_GAME);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean evolve(){
+        pacmanAlive();
+        gameOver();
+        pausedGame();
+        superBallActive();
+        levelOver();
+        return true;
+    }
+
+
     @Override
     public GameState getState(){return GameState.NORMAL_GAME;}
 }

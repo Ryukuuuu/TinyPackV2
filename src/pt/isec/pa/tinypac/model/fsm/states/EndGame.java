@@ -8,12 +8,6 @@ public class EndGame extends GameStateAdapter{
     public EndGame(EnvironmentManager environmentManager, GameContext gameContext){super(environmentManager,gameContext);}
 
     @Override
-    public boolean toWaitingForStart(){
-        setState(GameState.WAITING_FOR_START);
-        return true;
-    }
-
-    @Override
     public GameState getState(){
         return GameState.END_GAME;
     }

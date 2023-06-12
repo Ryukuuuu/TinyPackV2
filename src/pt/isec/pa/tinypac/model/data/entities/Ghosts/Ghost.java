@@ -14,6 +14,7 @@ public abstract class Ghost extends Entity {
 
     private final char scaredGhost = 'S';   //if vulnerable==true use this
     private boolean active=false;
+    private long deathTimer;
     //private ArrayList<Position> posRecord = new ArrayList<>();
 
     public Ghost(Environment environment, Element startingElement){
@@ -25,6 +26,9 @@ public abstract class Ghost extends Entity {
     public boolean getActive(){return active;}
     public void setActive(boolean active){this.active=active;}
     public void changeActive(){this.active = !this.active;}
+
+    public long getDeathTimer(){return deathTimer;}
+    public void setDeathTimer(long deathTimer){this.deathTimer=deathTimer;}
 
     public void gotoPortal(){
         Position pos = environment.getGhostPortal();
@@ -41,16 +45,19 @@ public abstract class Ghost extends Entity {
         this.setActive(true);
     }
 
-    public void die(Position currentPos){
+    public void die(Position currentPos,long currentTime){
         this.setVulnerable(false);
         this.setActive(false);
-        environment.addElement(this.getInventory(),currentPos.y(),currentPos.x());
+        //environment.addElement(this.getInventory(),currentPos.y(),currentPos.x());
+        deathTimer=currentTime;
     }
 
     public boolean move(Position currentPos,Position nextPos){
         Element elem=(Element) environment.getElement(nextPos.y(), nextPos.x());
         environment.addElement(this.getInventory(), currentPos.y(), currentPos.x());
         this.setInventory(elem);
+        if(elem instanceof Ghost)
+            ((Ghost) elem).setActive(true);
         environment.addElement(this, nextPos.y(), nextPos.x());
         return true;
     }
@@ -60,34 +67,35 @@ public abstract class Ghost extends Entity {
         Position currentPos = environment.getPosElement(ghost.getSymbol());
         IMazeElement element;
         char elem;
-        //left
-        element=environment.getElement(currentPos.y(),currentPos.x()-1);
-        elem = element.getSymbol();
-        if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation!=3 && !(element instanceof Ghost)){
-            possibleMoves.add(1);
-        }
-        //right
-        element=environment.getElement(currentPos.y(),currentPos.x()+1);
-        elem = environment.getElement(currentPos.y(), currentPos.x()+1).getSymbol();
-        if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation!=1 && !(element instanceof Ghost)){
-            possibleMoves.add(3);
-        }
-        //up
-        element=environment.getElement(currentPos.y()-1,currentPos.x());
-        elem = environment.getElement(currentPos.y()-1, currentPos.x()).getSymbol();
-        if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation!=4 && !(element instanceof Ghost)){
-            possibleMoves.add(2);
-        }
-        //down
-        element=environment.getElement(currentPos.y()+1,currentPos.x());
-        elem = environment.getElement(currentPos.y()+1, currentPos.x()).getSymbol();
-        if(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation!=2 && !(element instanceof Ghost)){
-            possibleMoves.add(4);
-        }
-        //System.out.println("Pssible Moves-> " + possibleMoves);
-        if(possibleMoves.size()==0){
-            possibleMoves.add(reverseRotation(previousRotation));
-        }
+            //left
+            element = environment.getElement(currentPos.y(), currentPos.x() - 1);
+            elem = element.getSymbol();
+            if (elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation != 3 && !(element instanceof Ghost)) {
+                possibleMoves.add(1);
+            }
+            //right
+            element = environment.getElement(currentPos.y(), currentPos.x() + 1);
+            elem = environment.getElement(currentPos.y(), currentPos.x() + 1).getSymbol();
+            if (elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation != 1 && !(element instanceof Ghost)) {
+                possibleMoves.add(3);
+            }
+            //up
+            element = environment.getElement(currentPos.y() - 1, currentPos.x());
+            elem = environment.getElement(currentPos.y() - 1, currentPos.x()).getSymbol();
+            if (elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation != 4 && !(element instanceof Ghost)) {
+                possibleMoves.add(2);
+            }
+            //down
+            element = environment.getElement(currentPos.y() + 1, currentPos.x());
+            elem = environment.getElement(currentPos.y() + 1, currentPos.x()).getSymbol();
+            if (elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y' && previousRotation != 2 && !(element instanceof Ghost)) {
+                possibleMoves.add(4);
+            }
+            //System.out.println("Pssible Moves-> " + possibleMoves);
+            if (possibleMoves.size() == 0) {
+                possibleMoves.add(reverseRotation(previousRotation));
+            }
+
         return possibleMoves;
     }
     public ArrayList<Position> getPossiblePositions(Ghost ghost,Position objective){

@@ -74,7 +74,7 @@ public class TinyPacLanternaUi implements IGameEngineEvolve {
                     }
                     default->{
                         if(key.getCharacter() == 'p'){
-                            fsm.toPause();
+                            //fsm.toPause();
                         }
                     }
                 }
@@ -103,7 +103,7 @@ public class TinyPacLanternaUi implements IGameEngineEvolve {
                     gameEngine.pause();
                     WaitForUserInput();
                     gameEngine.resume();
-                    fsm.toNormalGame();
+                    //fsm.toNormalGame();
                 }
                 case NORMAL_GAME -> {
                     getUserInput(key,gameEngine);
@@ -120,6 +120,7 @@ public class TinyPacLanternaUi implements IGameEngineEvolve {
                 }
                 case END_GAME -> {
                     System.out.println("EndGameState");
+                    gameEngine.pause();
                 }
             }
         }catch (IOException e){

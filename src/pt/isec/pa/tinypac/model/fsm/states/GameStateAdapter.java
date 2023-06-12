@@ -14,16 +14,24 @@ abstract public class GameStateAdapter implements IGameState{
         this.environmentManager=environmentManager;
     }
 
-    protected void setState(GameState state){context.setState(state.createState(environmentManager,context));}
+    protected void changeState(GameState state){context.changeState(state.createState(environmentManager,context));}
+
 
     @Override
-    public boolean toWaitingForStart(){return false;}
+    public boolean environmentInit(){return false;}
     @Override
-    public boolean toNormalGame(){return false;}
+    public boolean pacmanAlive(){return false;}
     @Override
-    public boolean toInvincibleGame(){return false;}
+    public boolean gameOver(){return false;}
     @Override
-    public boolean toPause(){return false;}
+    public boolean levelOver(){return false;}
     @Override
-    public boolean toEndGame(){return false;}
+    public boolean superBallActive(){return false;}
+    @Override
+    public boolean gotInput(){return false;}
+    @Override
+    public boolean evolve(){return false;}
+    @Override
+    public boolean pausedGame(){return false;}
+
 }

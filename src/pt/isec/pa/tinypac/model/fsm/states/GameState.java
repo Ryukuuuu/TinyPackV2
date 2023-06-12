@@ -8,7 +8,7 @@ public enum GameState {
 
     WAITING_FOR_START,NORMAL_GAME,INVINCIBLE_GAME,PAUSE_GAME,END_GAME;
 
-    IGameState createState(EnvironmentManager environmentManager, GameContext gameContext){
+    public IGameState createState(EnvironmentManager environmentManager, GameContext gameContext){
         return switch (this){
             case WAITING_FOR_START -> new WaitingForStart(environmentManager,gameContext);
             case NORMAL_GAME -> new NormalGame(environmentManager,gameContext);

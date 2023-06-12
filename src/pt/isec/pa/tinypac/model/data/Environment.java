@@ -16,6 +16,7 @@ import java.util.List;
 public class Environment {
     private int height,width;
     private int score=0;
+    private long lastBallEatenTimer;
     private Maze maze;
     private List<Entity> entities = new ArrayList<>();
 
@@ -24,11 +25,15 @@ public class Environment {
     private GhostManager inkyManager;
     private GhostManager clydeManager;
 
+
     public Environment(int height,int width){
         this.height=height;
         this.width=width;
         this.maze=new Maze(height,width);
     }
+
+    public long getLastBallEatenTimer(){return lastBallEatenTimer;}
+    public void setLastBallEatenTimer(long currentTime){lastBallEatenTimer=currentTime;}
 
     public int getHeight(){return height;}
     public int getWidth(){return width;}
@@ -77,6 +82,10 @@ public class Environment {
         return maze.get(y,x);
     }
 
+    public boolean environmentHasBalls(){
+        return (getPosElement('o') == null) && (getPosElement('O')==null);
+    }
+
     public void printEnvironment(){
         for(int i=0;i<height;i++){
             for(int j=0;j<width;j++){
@@ -112,7 +121,7 @@ public class Environment {
         entity.setSpawned(true);
     }
 
-    private PacMan getPacman(){
+    public PacMan getPacman(){
         for(Entity ent:entities){
             if(ent instanceof PacMan)
                 return (PacMan)ent;
@@ -187,7 +196,7 @@ public class Environment {
         return true;
     }
 
-    private boolean managePacManInventory(PacMan pacman){
+    private boolean managePacManInventory(PacMan pacman,long currentTime){
         IMazeElement inventory=pacman.getInventory();
         Position p = this.getPosElement('C');
         if(inventory instanceof Ball){
@@ -196,11 +205,11 @@ public class Environment {
         }
         else if(inventory instanceof SuperBall){
             score+=5;
-
             pacman.setInventory(new Blank());
+            setLastBallEatenTimer(currentTime);
         }
         else if(inventory instanceof Ghost){
-            ((Ghost) inventory).die(p);     //DEBUG
+            ((Ghost) inventory).die(p,currentTime);     //DEBUG
             pacman.setInventory(new Blank());//DEBUG
             if(!((Ghost) inventory).getVulnerable()){
                 score+=5;
@@ -225,17 +234,21 @@ public class Environment {
                 ghost.setSpawned(false);
             }
             else{
-                ((PacMan) inventory).setSpawned(false);
+                ((PacMan) inventory).die();
                 ghost.setInventory(new Blank());
+
                 //o jogo para
             }
         }
+        if(inventory instanceof Ghost){
+            ((Ghost) inventory).setActive(false);
+        }
         return true;
     }
-    public int checkAllEntitiesInventory(){
+    public int checkAllEntitiesInventory(long currentTime){
         for(Entity ent:entities){
             if(ent instanceof PacMan){
-                if(managePacManInventory((PacMan)ent)){
+                if(managePacManInventory((PacMan)ent,currentTime)){
                     //terminar o jogo
                     //retornar false
                 }
@@ -250,7 +263,7 @@ public class Environment {
         return 0;
     }
 
-    public boolean evolve(){
+    public boolean evolve(long currentTime){
         //Se isto retornar -1 é que o PacMan morreu portanto é preciso mudar o estado e isso tudo
         for(Entity ent:entities){
             if(ent instanceof PacMan){
@@ -258,7 +271,6 @@ public class Environment {
                     return false;
                 }
             }
-            checkAllEntitiesInventory();
             if(ent instanceof Pinky && ((Pinky) ent).getActive()){
                 //System.out.println("BLINKY-> " + ((Blinky) ent).getActive());
                 if(((Pinky) ent).getVulnerable() && pinkyManager.hasUndo())
@@ -292,6 +304,7 @@ public class Environment {
                 //System.out.println("Evolve[EnvManager]");
             }
         }
+        checkAllEntitiesInventory(currentTime);
         return true;
     }
 }

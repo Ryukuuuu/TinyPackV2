@@ -7,21 +7,41 @@ public class InvincibleGame extends GameStateAdapter{
 
     public InvincibleGame(EnvironmentManager environmentManager, GameContext gameContext){super(environmentManager,gameContext);}
 
-    @Override
-    public boolean toNormalGame(){
-        setState(GameState.NORMAL_GAME);
-        return true;
-    }
 
     @Override
-    public boolean toInvincibleGame(){
-        setState(GameState.PAUSE_GAME);
+    public boolean gameOver(){
+        if(environmentManager.getGameOver()){
+            changeState(GameState.END_GAME);
+        }
         return true;
     }
-
     @Override
-    public boolean toEndGame(){
-        setState(GameState.END_GAME);
+    public boolean levelOver(){
+        if(environmentManager.getLevelOver()){
+            changeState(GameState.WAITING_FOR_START);
+        }
+        return true;
+    }
+    @Override
+    public boolean superBallActive(){
+        if(!environmentManager.getSuperBallEaten()){
+            changeState(GameState.NORMAL_GAME);
+        }
+        return true;
+    }
+    @Override
+    public boolean pausedGame(){
+        if(environmentManager.getPausedGame()){
+            changeState(GameState.PAUSE_GAME);
+        }
+        return true;
+    }
+    @Override
+    public boolean evolve(){
+        gameOver();
+        levelOver();
+        pausedGame();
+        superBallActive();
         return true;
     }
 

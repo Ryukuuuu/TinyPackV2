@@ -8,11 +8,26 @@ public class WaitingForStart extends GameStateAdapter{
     public WaitingForStart(EnvironmentManager environmentManager, GameContext gameContext){super(environmentManager,gameContext);}
 
     @Override
-    public boolean toNormalGame(){
-        setState(GameState.NORMAL_GAME);
+    public boolean environmentInit(){
+        if(!environmentManager.getEnvironemntInit()){
+            environmentManager.init();
+        }
         return true;
     }
 
+    @Override
+    public boolean gotInput(){
+        if(environmentManager.getGotInput()){
+            changeState(GameState.NORMAL_GAME);
+        }
+        return true;
+    }
+    @Override
+    public boolean evolve(){
+        environmentInit();
+        gotInput();
+        return true;
+    }
     @Override
     public GameState getState(){return GameState.WAITING_FOR_START;}
 }

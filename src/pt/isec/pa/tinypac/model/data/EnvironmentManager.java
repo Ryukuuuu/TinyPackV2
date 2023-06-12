@@ -19,6 +19,7 @@ import static java.lang.Thread.sleep;
 public class EnvironmentManager{
 
     private static final String FILE_PATH = "src/pt/isec/pa/tinypac/utils/level";
+    final String PATH_TOP5="src/pt/isec/pa/tinypac/utils/top5.txt";
     private int currentLevel=1;
     private int lastLevel=1;
     private int score;
@@ -33,9 +34,33 @@ public class EnvironmentManager{
 
     private int debugCounter=0;
 
+    //Control vars
+    private boolean superBallEaten=false;
+    private boolean pacmanAlive=true;
+    private boolean gameOver = false;
+    private boolean levelOver=false;
+    private boolean gotInput=false;
+    private boolean environemntInit=false;
+    private boolean pausedGame = false;
+
+
     public EnvironmentManager(){
-        reset();
+        /*reset();*/
     }
+    public boolean getSuperBallEaten(){return superBallEaten;}
+    public void setSuperBallEaten(boolean superBallEaten){this.superBallEaten=superBallEaten;}
+    public boolean getPacmanAlive(){return pacmanAlive;}
+    public void setPacmanAlive(boolean pacmanAlive){this.pacmanAlive=pacmanAlive;}
+    public boolean getGameOver(){return gameOver;}
+    public void setGameOver(boolean gameOver){this.gameOver=gameOver;}
+    public boolean getLevelOver(){return levelOver;}
+    public void setLevelOver(boolean levelOver){this.levelOver=levelOver;}
+    public boolean getGotInput(){return gotInput;}
+    public void setGotInput(boolean gotInput){this.gotInput=gotInput;}
+    public boolean getEnvironemntInit(){return environemntInit;}
+    public void setEnvironmentInit(boolean environemntInit){this.environemntInit=environemntInit;}
+    public boolean getPausedGame(){return pausedGame;}
+    public void setPausedGame(boolean pausedGame){this.pausedGame=pausedGame;}
     private String createPath(int level){
         String path = FILE_PATH;
         if(level<10){
@@ -43,6 +68,26 @@ public class EnvironmentManager{
         }
         path+=level+".txt";
         return path;
+    }
+    private String[] getTop5(){
+        File file = new File(PATH_TOP5);
+        String[] top = new String[6];
+
+        if(!file.exists()){
+            return null;
+        }
+        try {
+            int i=0;
+            Scanner sc = new Scanner(file);
+            while(sc.hasNext()){
+                String line = sc.nextLine();
+                top[i] = line;
+                i++;
+            }
+        }catch (IOException e){
+            System.out.println("Error");
+        }
+        return top;
     }
     private Element createElement(char symbol,int y,int x){
         switch (symbol){
@@ -195,6 +240,11 @@ public class EnvironmentManager{
         lastLevel=1;
         setupLevel();
     }
+    public void init(){
+        lives=3;
+        setupLevel();
+        setEnvironmentInit(true);
+    }
 
     public void changePacmanDirection(int dir){
         environment.setPacmanDirection(dir);
@@ -203,9 +253,34 @@ public class EnvironmentManager{
     private long calcRunTime(long currentTime){
         return (currentTime-startingTime)/1000000000;
     }
-    private long timePassed(long currentTime,long reference){return (reference-startingTime)/1000000000;}
+    private long timePassed(long currentTime,long reference){return (currentTime-reference)/1000000000;}
 
+    public void updateEnvironmentData(long currentTime){
+        setPacmanAlive(checkIfPacmanAlive());
+        System.out.println("Pacman status-> " + pacmanAlive);
+        if(!pacmanAlive && lives>0){
+            lives--;
+        }
+        System.out.println("Lives remaining-> "+lives);
+        setGameOver(lives==0);
+        setSuperBallEaten(checkForInvincible(currentTime));
+        System.out.println("Super ball active-> " + getSuperBallEaten());
+        setLevelOver(environment.environmentHasBalls());
+        System.out.println("Level Over-> "+ levelOver);
+        System.out.println("GameStarted-> "+gotInput);
+    }
 
+    private boolean checkIfPacmanAlive(){
+        PacMan pac = environment.getPacman();
+        boolean control = pac != null && pac.getAlive();
+        System.out.println("CONTROL -------> "+control);
+        return control;
+    }
+    public boolean checkForInvincible(long currentTime){
+        long time = timePassed(currentTime,environment.getLastBallEatenTimer());
+        System.out.println("Time passed since las superball -> " + time);
+        return time<5;
+    }
 
     public void evolve(long currentTime){
         if(debugCounter==0){
@@ -223,8 +298,9 @@ public class EnvironmentManager{
         debugCounter++;
         if(environment==null)
             return;
-        if(!environment.evolve());
+        if(!environment.evolve(currentTime));
             //gameEngine.stop();
         //System.out.println("Score: "+environment.getScore());
+        updateEnvironmentData(currentTime);
     }
 }
