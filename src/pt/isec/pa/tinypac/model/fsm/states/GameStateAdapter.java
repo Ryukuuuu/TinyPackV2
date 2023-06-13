@@ -30,7 +30,7 @@ abstract public class GameStateAdapter implements IGameState{
     @Override
     public boolean gotInput(){return false;}
     @Override
-    public boolean evolve(){return false;}
+    public boolean evolve(long currentTime){return false;}
     @Override
     public boolean pausedGame(){return false;}
 

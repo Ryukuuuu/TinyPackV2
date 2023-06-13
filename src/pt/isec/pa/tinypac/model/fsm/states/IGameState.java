@@ -3,7 +3,7 @@ package pt.isec.pa.tinypac.model.fsm.states;
 public interface IGameState {
 
     boolean environmentInit();
-    boolean evolve();
+    boolean evolve(long currentTime);
     boolean pacmanAlive();
     boolean gameOver();
     boolean superBallActive();

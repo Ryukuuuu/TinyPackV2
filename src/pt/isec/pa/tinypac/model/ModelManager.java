@@ -13,6 +13,7 @@ import java.beans.PropertyChangeSupport;
 public class ModelManager implements IGameEngineEvolve {
     public static final String PROP_STATE = "_state_";
     public static final String PROP_UIUPDATE = "_ui_";
+    public static final String PROP_PACMAN_DEAD = "_pacman_";
     private final GameContext fsm;
     GameEngine gameEngine;
 
@@ -33,12 +34,13 @@ public class ModelManager implements IGameEngineEvolve {
         pcs.removePropertyChangeListener(property,listener);
     }
 
+    public void addPropertyChangeListenner(String property,PropertyChangeListener listener){pcs.addPropertyChangeListener(listener);}
+
 
     public void start(){
-        gameEngine.start(500);
+        gameEngine.start(100);
     }
-    //public void start(){fsm.start();}
-    //public void end(){fsm.end();}
+
 
     public EnvironmentManager getEnvironmentManager(){
         return fsm.getEnvironmentManager();
@@ -89,6 +91,7 @@ public class ModelManager implements IGameEngineEvolve {
     @Override
     public void evolve(IGameEngine gameEngine,long currentTime){
         fsm.evolve(currentTime);
-        pcs.firePropertyChange(PROP_STATE,null,null);
+        pcs.firePropertyChange(PROP_UIUPDATE,null,null);
+        System.out.println("\n\n----- "+fsm.getState()+"\n");
     }
 }

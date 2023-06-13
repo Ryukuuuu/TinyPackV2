@@ -31,7 +31,7 @@ public class GameContext {
     public boolean pausedGame(){return state.pausedGame();}
 
     public void evolve(long currentTime){
-        state.evolve();
-        environmentManager.evolve(currentTime);
+        state.evolve(currentTime);
+        //System.out.println("CurrentState-> "+ getState());
     }
 }

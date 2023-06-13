@@ -18,7 +18,7 @@ public class MainJFX extends Application {
     public void init() throws Exception{
         super.init();
         modelManager = new ModelManager();
-        modelManager.start();
+        //modelManager.start();
     }
 
     @Override

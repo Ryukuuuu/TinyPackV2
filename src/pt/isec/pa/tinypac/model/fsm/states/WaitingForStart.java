@@ -23,7 +23,7 @@ public class WaitingForStart extends GameStateAdapter{
         return true;
     }
     @Override
-    public boolean evolve(){
+    public boolean evolve(long currentTime){
         environmentInit();
         gotInput();
         return true;

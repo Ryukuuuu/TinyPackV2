@@ -61,6 +61,7 @@ public class EnvironmentManager{
     public void setEnvironmentInit(boolean environemntInit){this.environemntInit=environemntInit;}
     public boolean getPausedGame(){return pausedGame;}
     public void setPausedGame(boolean pausedGame){this.pausedGame=pausedGame;}
+    public int getLives(){return lives;}
     private String createPath(int level){
         String path = FILE_PATH;
         if(level<10){
@@ -69,7 +70,7 @@ public class EnvironmentManager{
         path+=level+".txt";
         return path;
     }
-    private String[] getTop5(){
+    public String[] getTop5(){
         File file = new File(PATH_TOP5);
         String[] top = new String[6];
 
@@ -249,36 +250,33 @@ public class EnvironmentManager{
     public void changePacmanDirection(int dir){
         environment.setPacmanDirection(dir);
     }
+    public long getRunTime(){return runTime;}
+    public String getRunTimeStr(){return Long.toString(runTime);}
 
     private long calcRunTime(long currentTime){
         return (currentTime-startingTime)/1000000000;
     }
     private long timePassed(long currentTime,long reference){return (currentTime-reference)/1000000000;}
 
-    public void updateEnvironmentData(long currentTime){
+    public void updateEnvironmentData(long currentTime) {
         setPacmanAlive(checkIfPacmanAlive());
-        System.out.println("Pacman status-> " + pacmanAlive);
-        if(!pacmanAlive && lives>0){
+        if (!pacmanAlive && lives > 0) {
             lives--;
         }
-        System.out.println("Lives remaining-> "+lives);
-        setGameOver(lives==0);
+        setGameOver(lives == 0);
         setSuperBallEaten(checkForInvincible(currentTime));
-        System.out.println("Super ball active-> " + getSuperBallEaten());
         setLevelOver(environment.environmentHasBalls());
-        System.out.println("Level Over-> "+ levelOver);
-        System.out.println("GameStarted-> "+gotInput);
     }
 
     private boolean checkIfPacmanAlive(){
         PacMan pac = environment.getPacman();
-        boolean control = pac != null && pac.getAlive();
-        System.out.println("CONTROL -------> "+control);
-        return control;
+        boolean k = pac.getAlive();
+        //System.out.println(k);
+        return k;
     }
     public boolean checkForInvincible(long currentTime){
         long time = timePassed(currentTime,environment.getLastBallEatenTimer());
-        System.out.println("Time passed since las superball -> " + time);
+        //System.out.println("Time passed since las superball -> " + time);
         return time<5;
     }
 
@@ -299,7 +297,7 @@ public class EnvironmentManager{
         if(environment==null)
             return;
         if(!environment.evolve(currentTime));
-            //gameEngine.stop();
+        //gameEngine.stop();
         //System.out.println("Score: "+environment.getScore());
         updateEnvironmentData(currentTime);
     }

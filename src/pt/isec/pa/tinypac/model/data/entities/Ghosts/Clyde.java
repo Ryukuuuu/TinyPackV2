@@ -48,7 +48,7 @@ public class Clyde extends Ghost{
                 return false;
             }
             else{           //left
-                for(int i=x;x> pacmanPos.x();i--){
+                for(int i=x;i> pacmanPos.x();i--){
                     if(environment.getElement(y,i) instanceof Wall){
                         //System.out.println("Wall between[LEFT]");
                         return true;

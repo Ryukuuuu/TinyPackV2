@@ -37,7 +37,8 @@ public class InvincibleGame extends GameStateAdapter{
         return true;
     }
     @Override
-    public boolean evolve(){
+    public boolean evolve(long currentTime){
+        environmentManager.evolve(currentTime);
         gameOver();
         levelOver();
         pausedGame();

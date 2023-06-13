@@ -4,9 +4,8 @@ import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import pt.isec.pa.tinypac.model.ModelManager;
 
 public class StartMenu extends BorderPane {
@@ -14,6 +13,8 @@ public class StartMenu extends BorderPane {
     ModelManager modelManager;
     Button btnStart,btnExit,btnTop5;
     Label label;
+    BorderPane top5;
+    BorderPane game;
 
     public StartMenu(ModelManager modelManager){
         this.modelManager = modelManager;
@@ -35,18 +36,30 @@ public class StartMenu extends BorderPane {
         this.setCenter(vbox);
     }
 
+    private void createTop5(){
+        top5 = new Top5UI(modelManager);
+        top5.setVisible(true);
+        this.setCenter(top5);
+    }
+
+    private void createGameUI(){
+        modelManager.start();
+        game = new gameUI(modelManager);
+        game.setVisible(true);
+        BackgroundFill backgroundFill = new BackgroundFill(Color.BLACK,null,null);
+        game.setBackground(new Background(backgroundFill));
+        this.setCenter(game);
+    }
+
     private void registerHandles(){
         btnStart.setOnAction(event ->{
-            modelManager.start();
+            createGameUI();
         });
         btnTop5.setOnAction(event -> {
-           //to top5
+            createTop5();
         });
         btnExit.setOnAction(event -> {
             Platform.exit();
         });
-    }
-    private void update(){
-        this.setVisible(false);
     }
 }

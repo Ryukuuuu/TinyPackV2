@@ -8,22 +8,21 @@ public class RootPane extends BorderPane {
     ModelManager modelManager;
 
     BorderPane startMenu;
-    BorderPane Top5Menu;
-    StackPane stackPane;
+
 
     public RootPane(ModelManager modelManager){
         this.modelManager=modelManager;
-        modelManager.start();
+        //modelManager.start();
         createViews();
     }
 
     private void createViews(){
-        CSSManager.applyCSS(this,"styles.css");
-        modelManager.start();
-        stackPane = new StackPane(
-                new gameUI(modelManager)
-        );
-        setCenter(stackPane);
+        startMenu = new StartMenu(modelManager);
+        startMenu.setVisible(true);
+        this.setCenter(startMenu);
     }
 
+    private void registerHandlers(){
+
+    }
 }

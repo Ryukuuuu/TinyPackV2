@@ -10,8 +10,11 @@ public class NormalGame extends GameStateAdapter{
 
     @Override
     public boolean pacmanAlive(){
-        if(environmentManager.getPacmanAlive()){
-            changeState(GameState.END_GAME);
+        if(!environmentManager.getPacmanAlive()){
+            if(environmentManager.getLives()>0)
+                changeState(GameState.WAITING_FOR_START);
+            else
+                changeState(GameState.END_GAME);
         }
         return true;
     }
@@ -43,12 +46,14 @@ public class NormalGame extends GameStateAdapter{
     public boolean pausedGame(){
         if(environmentManager.getPausedGame()){
             changeState(GameState.PAUSE_GAME);
+            environmentManager.setGotInput(false);
         }
         return true;
     }
 
     @Override
-    public boolean evolve(){
+    public boolean evolve(long currentTime){
+        environmentManager.evolve(currentTime);
         pacmanAlive();
         gameOver();
         pausedGame();
