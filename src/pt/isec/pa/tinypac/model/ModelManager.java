@@ -3,7 +3,6 @@ package pt.isec.pa.tinypac.model;
 import pt.isec.pa.tinypac.gameEngine.GameEngine;
 import pt.isec.pa.tinypac.gameEngine.IGameEngine;
 import pt.isec.pa.tinypac.gameEngine.IGameEngineEvolve;
-import pt.isec.pa.tinypac.model.data.EnvironmentManager;
 import pt.isec.pa.tinypac.model.fsm.GameContext;
 import pt.isec.pa.tinypac.model.fsm.states.GameState;
 
@@ -16,7 +15,6 @@ public class ModelManager implements IGameEngineEvolve {
     public static final String PROP_PACMAN_DEAD = "_pacman_";
     private final GameContext fsm;
     GameEngine gameEngine;
-
     PropertyChangeSupport pcs;
 
     public ModelManager(){
@@ -40,54 +38,23 @@ public class ModelManager implements IGameEngineEvolve {
     public void start(){
         gameEngine.start(100);
     }
+    public void stop(){gameEngine.stop();}
 
-
-    public EnvironmentManager getEnvironmentManager(){
-        return fsm.getEnvironmentManager();
-    }
-
-    public boolean pacmanAlive(){
-        boolean ret=fsm.pacmanAlive();
-        pcs.firePropertyChange(PROP_STATE,null,null);
-        return ret;
-    }
-
-    public boolean gameOver(){
-        boolean ret=fsm.gameOver();
-        pcs.firePropertyChange(PROP_STATE,null,null);
-        pcs.firePropertyChange(PROP_UIUPDATE,null,null);
-        return ret;
-    }
-
-    public boolean superBallActive(){
-        boolean ret=fsm.superBallActive();
-        pcs.firePropertyChange(PROP_STATE,null,null);
-        pcs.firePropertyChange(PROP_UIUPDATE,null,null);
-        return ret;
-    }
-
-    public boolean gotInput(){
-        boolean ret=fsm.gotInput();
-        pcs.firePropertyChange(PROP_STATE,null,null);
-        return ret;
-    }
-
-    public boolean levelOver(){
-        boolean ret=fsm.levelOver();
-        pcs.firePropertyChange(PROP_STATE,null,null);
-        pcs.firePropertyChange(PROP_UIUPDATE,null,null);
-        return ret;
-    }
-
-    public boolean pausedGame(){
-        boolean ret=fsm.pausedGame();
-        pcs.firePropertyChange(PROP_STATE,null,null);
-        pcs.firePropertyChange(PROP_UIUPDATE,null,null);
-        return ret;
-    }
 
     public GameState getState(){return fsm.getState();}
 
+    public void changePacmanRotation(int rotation){fsm.changePacmanRotation(rotation);}
+    public void gotInput(boolean input){fsm.gotInput(input);}
+    public void pauseGame(boolean pause){
+        System.out.println("MODELMANAGER");
+        fsm.pausedGame(pause);}
+    public int getLives(){ return fsm.getLives();}
+    public char[][] getMaze(){return fsm.getMaze();}
+    public boolean getSpawnedFruit(){return fsm.getSpawnedFruit();}
+    public String[] getTop5(){return fsm.getTop5();}
+    public long getCurrentTime(){return fsm.getCurrentTime();}
+    public String getCurrentTimeStr(){return Long.toString(fsm.getCurrentTime());}
+    public int getLevel(){return fsm.getLevel();}
     @Override
     public void evolve(IGameEngine gameEngine,long currentTime){
         fsm.evolve(currentTime);

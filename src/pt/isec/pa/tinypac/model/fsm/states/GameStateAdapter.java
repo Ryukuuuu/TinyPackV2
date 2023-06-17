@@ -1,6 +1,5 @@
 package pt.isec.pa.tinypac.model.fsm.states;
 
-import pt.isec.pa.tinypac.model.data.Environment;
 import pt.isec.pa.tinypac.model.data.EnvironmentManager;
 import pt.isec.pa.tinypac.model.fsm.GameContext;
 
@@ -9,7 +8,7 @@ abstract public class GameStateAdapter implements IGameState{
     protected GameContext context;
     protected EnvironmentManager environmentManager;
 
-    protected GameStateAdapter(EnvironmentManager environmentManager,GameContext context){
+    protected GameStateAdapter(EnvironmentManager environmentManager, GameContext context){
         this.context=context;
         this.environmentManager=environmentManager;
     }
@@ -28,10 +27,12 @@ abstract public class GameStateAdapter implements IGameState{
     @Override
     public boolean superBallActive(){return false;}
     @Override
-    public boolean gotInput(){return false;}
+    public boolean gotInput(boolean input){return false;}
     @Override
     public boolean evolve(long currentTime){return false;}
     @Override
-    public boolean pausedGame(){return false;}
+    public boolean pausedGame(boolean pause){return false;}
+    @Override
+    public boolean changePacmanRotation(int rotation){return false;}
 
 }

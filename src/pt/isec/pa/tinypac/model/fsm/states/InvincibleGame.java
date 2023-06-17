@@ -30,10 +30,15 @@ public class InvincibleGame extends GameStateAdapter{
         return true;
     }
     @Override
-    public boolean pausedGame(){
-        if(environmentManager.getPausedGame()){
+    public boolean pausedGame(boolean pause){
+        if(pause){
             changeState(GameState.PAUSE_GAME);
         }
+        return true;
+    }
+    @Override
+    public boolean changePacmanRotation(int rotation){
+        environmentManager.changePacmanRotation(rotation);
         return true;
     }
     @Override
@@ -41,7 +46,7 @@ public class InvincibleGame extends GameStateAdapter{
         environmentManager.evolve(currentTime);
         gameOver();
         levelOver();
-        pausedGame();
+        //pausedGame();
         superBallActive();
         return true;
     }

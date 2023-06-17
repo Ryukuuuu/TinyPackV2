@@ -17,6 +17,8 @@ public class Environment {
     private int height,width;
     private int score=0;
     private long lastBallEatenTimer;
+    private long fruitEatTimer;
+    private int nrBallsEaten=0;
     private Maze maze;
     private List<Entity> entities = new ArrayList<>();
 
@@ -34,9 +36,11 @@ public class Environment {
 
     public long getLastBallEatenTimer(){return lastBallEatenTimer;}
     public void setLastBallEatenTimer(long currentTime){lastBallEatenTimer=currentTime;}
-
+    public long getFruitEatTimer(){return fruitEatTimer;}
+    public void setFruitEatTimer(long fruitEatTimer){this.fruitEatTimer=fruitEatTimer;}
     public int getHeight(){return height;}
     public int getWidth(){return width;}
+    public int getNrBallsEaten(){return nrBallsEaten;}
 
     public char[][] getMaze(){
         if(maze==null){
@@ -170,10 +174,15 @@ public class Environment {
     public boolean spawnGhost(){
         for(Entity e: entities){
             if(e instanceof Ghost && !((Ghost) e).getActive()){
-                ((Ghost) e).gotoPortal();
-                ((Ghost) e).setSpawned(true);
-                ((Ghost) e).setActive(true);
-                return true;
+                if(((Ghost) e).getEaten()){
+
+                }
+                else{
+                    ((Ghost) e).gotoPortal();
+                    ((Ghost) e).setSpawned(true);
+                    ((Ghost) e).setActive(true);
+                    return true;
+                }
             }
         }
         return false;
@@ -201,25 +210,35 @@ public class Environment {
         Position p = this.getPosElement('C');
         if(inventory instanceof Ball){
             score+=1;
+            nrBallsEaten++;
             pacman.setInventory(new Blank());
         }
         else if(inventory instanceof SuperBall){
             score+=5;
+            nrBallsEaten++;
             pacman.setInventory(new Blank());
             setLastBallEatenTimer(currentTime);
         }
         else if(inventory instanceof Ghost){
-            ((Ghost) inventory).die(p,currentTime);     //DEBUG
-            pacman.setInventory(new Blank());//DEBUG
-            if(!((Ghost) inventory).getVulnerable()){
+            //((Ghost) inventory).die(p,currentTime);     //DEBUG
+            //pacman.setInventory(new Blank());           //DEBUG
+            if(((Ghost) inventory).getVulnerable()){
+                ((Ghost) inventory).die(p,currentTime);
                 score+=5;
                 pacman.setInventory(new Blank());
             }
             else{
+                ((Ghost) inventory).setInInventory(true);
+                pacman.die();
 
-                pacman.setSpawned(false);
-                addElement(inventory,p.y(),p.x());
                 return false;
+            }
+        }
+        else if(inventory instanceof FruitSpawn){
+            if(((FruitSpawn) inventory).getSpawned()){
+                score+=15;
+                setFruitEatTimer(currentTime);
+                ((FruitSpawn) inventory).setSpawned(false);
             }
         }
         return true;
@@ -236,74 +255,79 @@ public class Environment {
             else{
                 ((PacMan) inventory).die();
                 ghost.setInventory(new Blank());
-
-                //o jogo para
             }
         }
         if(inventory instanceof Ghost){
+            System.out.println("Setting inInventory to true");
             ((Ghost) inventory).setActive(false);
+            ((Ghost) inventory).setInInventory(true);
         }
         return true;
     }
-    public int checkAllEntitiesInventory(long currentTime){
+
+    private void moveAllEntities(long currentTime){
         for(Entity ent:entities){
             if(ent instanceof PacMan){
-                if(managePacManInventory((PacMan)ent,currentTime)){
-                    //terminar o jogo
-                    //retornar false
+                if(!((PacMan) ent).evolve()){
+                    return;
                 }
             }
-            if(ent instanceof Ghost){
-                if(manageGhostInventory((Ghost)ent)){
-                    //terminar o jogo
-                    //retornar false
-                }
+            if(ent instanceof Pinky && ((Pinky) ent).getActive() && !((Pinky) ent).getInInventory()){
+                if(ent.getVulnerable() && pinkyManager.hasUndo())
+                    pinkyManager.undo();
+                else
+                    pinkyManager.evolve();
+            }
+            if(ent instanceof Inky && ((Inky) ent).getActive() && !((Inky) ent).getInInventory()){
+                if(ent.getVulnerable() && inkyManager.hasUndo())
+                    inkyManager.undo();
+                else
+                    inkyManager.evolve();
+            }
+            if(ent instanceof Clyde && ((Clyde) ent).getActive() && !((Clyde) ent).getInInventory()){
+                if(ent.getVulnerable() && clydeManager.hasUndo())
+                    clydeManager.undo();
+                else
+                    clydeManager.evolve();
+            }
+            if(ent instanceof Blinky && ((Blinky) ent).getActive() && !((Blinky) ent).getInInventory()){
+                if(ent.getVulnerable() && blinkyManager.hasUndo())
+                    blinkyManager.undo();
+                else
+                    blinkyManager.evolve();
             }
         }
-        return 0;
+    }
+    private void checkAllEntitiesInventory(long currentTime){
+        for(Entity ent : entities){
+            if(ent instanceof PacMan)
+                managePacManInventory((PacMan)ent,currentTime);
+            else{
+                manageGhostInventory((Ghost)ent);
+            }
+        }
+    }
+
+    public void scareGhosts(){
+        for(Entity ent : entities){
+            if(ent instanceof Ghost){
+                ent.setVulnerable(true);
+                ((Ghost) ent).setRespawned(false);
+            }
+        }
+    }
+    public void setGhostsToNormal(){
+        for(Entity ent : entities){
+            if(ent instanceof Ghost){
+                ent.setVulnerable(false);
+                ((Ghost) ent).setRespawned(false);
+            }
+        }
     }
 
     public boolean evolve(long currentTime){
         //Se isto retornar -1 é que o PacMan morreu portanto é preciso mudar o estado e isso tudo
-        for(Entity ent:entities){
-            if(ent instanceof PacMan){
-                if(!((PacMan) ent).evolve()){
-                    return false;
-                }
-            }
-            if(ent instanceof Pinky && ((Pinky) ent).getActive()){
-                //System.out.println("BLINKY-> " + ((Blinky) ent).getActive());
-                if(((Pinky) ent).getVulnerable() && pinkyManager.hasUndo())
-                    pinkyManager.undo();
-                else
-                    pinkyManager.evolve();
-                //System.out.println("Evolve[EnvManager]");
-            }
-            if(ent instanceof Inky && ((Inky) ent).getActive()){
-                //System.out.println("BLINKY-> " + ((Blinky) ent).getActive());
-                if(((Inky) ent).getVulnerable() && inkyManager.hasUndo())
-                    inkyManager.undo();
-                else
-                    inkyManager.evolve();
-                //System.out.println("Evolve[EnvManager]");
-            }
-            if(ent instanceof Clyde && ((Clyde) ent).getActive()){
-                //System.out.println("BLINKY-> " + ((Blinky) ent).getActive());
-                if(((Clyde) ent).getVulnerable() && clydeManager.hasUndo())
-                    clydeManager.undo();
-                else
-                    clydeManager.evolve();
-                //System.out.println("Evolve[EnvManager]");
-            }
-            if(ent instanceof Blinky && ((Blinky) ent).getActive()){
-                //System.out.println("BLINKY-> " + ((Blinky) ent).getActive());
-                if(((Blinky) ent).getVulnerable() && blinkyManager.hasUndo())
-                    blinkyManager.undo();
-                else
-                    blinkyManager.evolve();
-                //System.out.println("Evolve[EnvManager]");
-            }
-        }
+        moveAllEntities(currentTime);
         checkAllEntitiesInventory(currentTime);
         return true;
     }

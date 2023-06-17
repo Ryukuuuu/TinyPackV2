@@ -7,9 +7,22 @@ public class PauseGameState extends GameStateAdapter{
 
     public PauseGameState(EnvironmentManager environmentManager, GameContext gameContext){super(environmentManager,gameContext);}
 
+    /*@Override
+    public boolean gotInput(boolean input){
+        if(input){
+            if(environmentManager.getSuperBallEaten())
+                changeState(GameState.INVINCIBLE_GAME);
+            else
+                changeState(GameState.NORMAL_GAME);
+            environmentManager.setPausedGame(false);
+        }
+        return true;
+    }*/
     @Override
-    public boolean gotInput(){
-        if(environmentManager.getGotInput()){
+    public boolean pausedGame(boolean pause){
+        System.out.println("NO ESTADO1111");
+        if(!pause){
+            System.out.println("NO ESTADO");
             if(environmentManager.getSuperBallEaten())
                 changeState(GameState.INVINCIBLE_GAME);
             else
@@ -20,7 +33,7 @@ public class PauseGameState extends GameStateAdapter{
     }
     @Override
     public boolean evolve(long currentTime){
-        gotInput();
+        //gotInput();
         return true;
     }
     @Override

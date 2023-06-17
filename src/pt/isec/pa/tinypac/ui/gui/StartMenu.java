@@ -18,7 +18,6 @@ public class StartMenu extends BorderPane {
 
     public StartMenu(ModelManager modelManager){
         this.modelManager = modelManager;
-
         createViews();
         registerHandles();
     }
@@ -56,6 +55,7 @@ public class StartMenu extends BorderPane {
             createGameUI();
         });
         btnTop5.setOnAction(event -> {
+            this.getChildren().clear();
             createTop5();
         });
         btnExit.setOnAction(event -> {

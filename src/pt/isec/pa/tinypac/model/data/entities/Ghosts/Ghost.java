@@ -14,8 +14,9 @@ public abstract class Ghost extends Entity {
 
     private final char scaredGhost = 'S';   //if vulnerable==true use this
     private boolean active=false;
-    private long deathTimer;
-    //private ArrayList<Position> posRecord = new ArrayList<>();
+    private boolean eaten=false;
+    private boolean inInventory=false;
+    private boolean respawned=false;
 
     public Ghost(Environment environment, Element startingElement){
         super(environment,startingElement,2);
@@ -26,19 +27,19 @@ public abstract class Ghost extends Entity {
     public boolean getActive(){return active;}
     public void setActive(boolean active){this.active=active;}
     public void changeActive(){this.active = !this.active;}
-
-    public long getDeathTimer(){return deathTimer;}
-    public void setDeathTimer(long deathTimer){this.deathTimer=deathTimer;}
-
+    public boolean getInInventory(){return inInventory;}
+    public void setInInventory(boolean inInventory){this.inInventory=inInventory;}
+    public boolean getEaten(){return eaten;}
+    public void setEaten(boolean eaten){this.eaten=eaten;}
+    public boolean isRespawned(){return respawned;}
+    public void setRespawned(boolean respawned){this.respawned=respawned;}
     public void gotoPortal(){
         Position pos = environment.getGhostPortal();
-        //System.out.println("\n\nGhost Portal->"+pos);
         Position ghostPos = environment.getPosElement(this.getSymbol());
         if(pos == null){
             return;
         }
         Element portal = (Element) environment.getElement(pos.y(),pos.x());
-
         environment.addElement(this.getInventory(),ghostPos.y(),ghostPos.x());
         this.setInventory(portal);
         environment.addElement(this,pos.y(), pos.x());
@@ -48,8 +49,7 @@ public abstract class Ghost extends Entity {
     public void die(Position currentPos,long currentTime){
         this.setVulnerable(false);
         this.setActive(false);
-        //environment.addElement(this.getInventory(),currentPos.y(),currentPos.x());
-        deathTimer=currentTime;
+        this.setEaten(true);
     }
 
     public boolean move(Position currentPos,Position nextPos){
@@ -226,7 +226,6 @@ public abstract class Ghost extends Entity {
         //System.out.println("Next element-> " + elem);
         return !(elem != 'x' && elem != 'W' && elem != 'Y' && elem != 'y');
     }
-
 
 
     abstract public boolean evolve();

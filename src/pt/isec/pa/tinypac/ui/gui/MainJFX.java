@@ -25,14 +25,17 @@ public class MainJFX extends Application {
     public void start(Stage stage) throws Exception{
         RootPane root = new RootPane(modelManager);
         Scene scene = new Scene(root,700,700,Color.BLACK);
-
         scene.setUserData(modelManager);
-
         stage.setScene(scene);
         stage.setTitle("TinyPac");
         stage.setMinWidth(700);
         stage.setMinHeight(400);
         stage.show();
+    }
+
+    @Override
+    public void stop(){
+        modelManager.stop();
     }
 
 

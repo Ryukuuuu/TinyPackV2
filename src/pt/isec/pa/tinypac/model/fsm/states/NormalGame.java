@@ -1,6 +1,5 @@
 package pt.isec.pa.tinypac.model.fsm.states;
 
-import pt.isec.pa.tinypac.model.data.Environment;
 import pt.isec.pa.tinypac.model.data.EnvironmentManager;
 import pt.isec.pa.tinypac.model.fsm.GameContext;
 
@@ -43,11 +42,15 @@ public class NormalGame extends GameStateAdapter{
         return true;
     }
     @Override
-    public boolean pausedGame(){
-        if(environmentManager.getPausedGame()){
+    public boolean pausedGame(boolean pause){
+        if(pause){
             changeState(GameState.PAUSE_GAME);
-            environmentManager.setGotInput(false);
         }
+        return true;
+    }
+    @Override
+    public boolean changePacmanRotation(int rotation){
+        environmentManager.changePacmanRotation(rotation);
         return true;
     }
 
@@ -56,7 +59,6 @@ public class NormalGame extends GameStateAdapter{
         environmentManager.evolve(currentTime);
         pacmanAlive();
         gameOver();
-        pausedGame();
         superBallActive();
         levelOver();
         return true;

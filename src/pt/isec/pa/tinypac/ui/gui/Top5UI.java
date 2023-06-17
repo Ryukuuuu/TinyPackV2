@@ -26,7 +26,7 @@ public class Top5UI extends BorderPane {
     }
 
     private void showTop5(){
-        top = modelManager.getEnvironmentManager().getTop5();
+        top = modelManager.getTop5();
         vBox = new VBox();
         for(int i=0;i<top.length;i++){
             javafx.scene.control.Label newLabel = new javafx.scene.control.Label(top[i]);

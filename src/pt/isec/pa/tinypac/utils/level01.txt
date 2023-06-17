@@ -1,31 +1,31 @@
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-xooooooooooooxxxoooooooooooox
-xoxxxxoxxxxxoxxxoxxxxxoxxxxox
-xOxxxxoxxxxxoxxxoxxxxxoxxxxOx
-xoxxxxoxxxxxoxxxoxxxxxoxxxxox
-xooooooooooooooooooooooooooox
-xoxxxxoxxoxxxxxxxxxoxxoxxxxox
-xoxxxxoxxoxxxxxxxxxoxxoxxxxox
-xooooooxxooooxxxooooxxoooooox
-xxxxxxoxxxxxoxxxoxxxxxoxxxxxx
-xxxxxxoxxxxxoxxxoxxxxxoxxxxxx
-xxxxxxoxxoooooooooooxxoxxxxxx
-xxxxxxoxxoxxxxYxxxxoxxoxxxxxx
-xxxxxxoxxoxyyyyyyyxoxxoxxxxxx
-xWooooooooxyyyyyyyxooooooooWx
-xxxxxxoxxoxyyyyyyyxoxxoxxxxxx
-xxxxxxoxxoxxxxxxxxxoxxoxxxxxx
-xxxxxxoxxoooooFoooooxxoxxxxxx
-xxxxxxoxxoxxxxxxxxxoxxoxxxxxx
-xxxxxxoxxoxxxxxxxxxoxxoxxxxxx
-xooooooooooooxxxoooooooooooox
-xoxxxxoxxxxxoxxxoxxxxxoxxxxox
-xoxxxxoxxxxxoxxxoxxxxxoxxxxox
-xOooxxooooooooMooooooooxxooOx
-xxxoxxoxxoxxxxxxxxxoxxoxxoxxx
-xxxoxxoxxoxxxxxxxxxoxxoxxoxxx
-xooooooxxooooxxxooooxxoooooox
-xoxxxxxxxxxxoxxxoxxxxxxxxxxox
-xoxxxxxxxxxxoxxxoxxxxxxxxxxox
-xooooooooooooooooooooooooooox
+x            xxx            x
+x xxxx xxxxx xxx xxxxx xxxx x
+x xxxx xxxxx xxx xxxxx xxxx x
+x xxxx xxxxx xxx xxxxx xxxx x
+x                           x
+x xxxx xx xxxxxxxxx xx xxxx x
+x xxxx xx xxxxxxxxx xx xxxx x
+x      xx    xxx    xx      x
+xxxxxx xxxxx xxx xxxxx xxxxxx
+xxxxxx xxxxx xxx xxxxx xxxxxx
+xxxxxx xx           xx xxxxxx
+xxxxxx xx xxxxYxxxx xx xxxxxx
+xxxxxx xx xyyyyyyyx xx xxxxxx
+xW        xyyyyyyyx        Wx
+xxxxxx xx xyyyyyyyx xx xxxxxx
+xxxxxx xx xxxxxxxxx xx xxxxxx
+xxxxxx xx     F     xx xxxxxx
+xxxxxx xx xxxxxxxxx xx xxxxxx
+xxxxxx xx xxxxxxxxx xx xxxxxx
+x            xxx            x
+x xxxx xxxxx xxx xxxxx xxxx x
+x xxxx xxxxx xxx xxxxx xxxx x
+x   xx        M        xx   x
+xxx xx xx xxxxxxxxx xx xx xxx
+xxx xx xx xxxxxxxxx xx xx xxx
+x      xx    xxx    xx      x
+x xxxxxxxxxx xxx xxxxxxxxxx x
+x xxxxxxxxxx xxx xxxxxxxxxx x
+x    o                      x
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxx

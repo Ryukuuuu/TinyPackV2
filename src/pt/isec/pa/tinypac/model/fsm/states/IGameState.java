@@ -7,9 +7,10 @@ public interface IGameState {
     boolean pacmanAlive();
     boolean gameOver();
     boolean superBallActive();
-    boolean gotInput();
+    boolean gotInput(boolean input);
     boolean levelOver();
-    boolean pausedGame();
+    boolean pausedGame(boolean pause);
+    boolean changePacmanRotation(int rotation);
 
     GameState getState();
 }

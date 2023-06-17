@@ -1,19 +1,16 @@
-package pt.isec.pa.tinypac.ui;
+package pt.isec.pa.tinypac.ui.Text;
 
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
-import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import pt.isec.pa.tinypac.gameEngine.IGameEngine;
 import pt.isec.pa.tinypac.gameEngine.IGameEngineEvolve;
 import pt.isec.pa.tinypac.model.fsm.GameContext;
 
 import java.io.IOException;
-import java.security.Key;
 
 public class TinyPacLanternaUi implements IGameEngineEvolve {
     GameContext fsm;
@@ -60,7 +57,7 @@ public class TinyPacLanternaUi implements IGameEngineEvolve {
         screen.refresh();
     }
 
-    private void getUserInput(KeyStroke key,IGameEngine gameEngine){
+    /*private void getUserInput(KeyStroke key,IGameEngine gameEngine){
         try {
             if (key != null) {
                 switch (key.getKeyType()) {
@@ -82,7 +79,7 @@ public class TinyPacLanternaUi implements IGameEngineEvolve {
         }catch (IOException e){
             e.printStackTrace();
         }
-    }
+    }*/
 
     public void WaitForUserInput(){
         try {
@@ -106,11 +103,11 @@ public class TinyPacLanternaUi implements IGameEngineEvolve {
                     //fsm.toNormalGame();
                 }
                 case NORMAL_GAME -> {
-                    getUserInput(key,gameEngine);
+                    //getUserInput(key,gameEngine);
                 }
                 case INVINCIBLE_GAME -> {
                     System.out.println("Invincible");
-                    getUserInput(key,gameEngine);
+                    //getUserInput(key,gameEngine);
                 }
                 case PAUSE_GAME -> {
                     gameEngine.pause();

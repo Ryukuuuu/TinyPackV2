@@ -16,8 +16,8 @@ public class WaitingForStart extends GameStateAdapter{
     }
 
     @Override
-    public boolean gotInput(){
-        if(environmentManager.getGotInput()){
+    public boolean gotInput(boolean input){
+        if(input){
             changeState(GameState.NORMAL_GAME);
         }
         return true;
@@ -25,7 +25,7 @@ public class WaitingForStart extends GameStateAdapter{
     @Override
     public boolean evolve(long currentTime){
         environmentInit();
-        gotInput();
+        //gotInput();
         return true;
     }
     @Override

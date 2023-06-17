@@ -28,7 +28,8 @@ public class Blinky extends Ghost{
 
     @Override
     public boolean evolve(){
-        if(this.getActive()) {
+        System.out.println("Active->" +this.getActive()+"\nInInventory->"+this.getInInventory());
+        if(this.getActive() && !this.getInInventory()) {
             ArrayList<Integer> possibleMoves = getPossibleMoves(this.getRotation(), this);
             Position nextPos = getNextPosition();
             Position currentPos = environment.getElementPosition(this);

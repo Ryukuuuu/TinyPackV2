@@ -6,23 +6,24 @@ import pt.isec.pa.tinypac.ui.gui.ressources.css.CSSManager;
 
 public class RootPane extends BorderPane {
     ModelManager modelManager;
-
     BorderPane startMenu;
+    StackPane game;
 
 
     public RootPane(ModelManager modelManager){
         this.modelManager=modelManager;
-        //modelManager.start();
         createViews();
     }
 
     private void createViews(){
+        game = new StackPane(
+                new MazeUI(modelManager),
+                new PauseUI(modelManager)
+        );
+        game.setVisible(false);
+        this.setCenter(game);
         startMenu = new StartMenu(modelManager);
         startMenu.setVisible(true);
         this.setCenter(startMenu);
-    }
-
-    private void registerHandlers(){
-
     }
 }
