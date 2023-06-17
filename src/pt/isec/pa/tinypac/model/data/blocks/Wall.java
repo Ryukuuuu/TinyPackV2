@@ -2,7 +2,9 @@ package pt.isec.pa.tinypac.model.data.blocks;
 
 import pt.isec.pa.tinypac.model.data.maze.Element;
 
-public class Wall extends Element {
+import java.io.Serializable;
+
+public class Wall extends Element  implements Serializable {
     private final char symbol = 'x';
 
     public Wall(){super();}

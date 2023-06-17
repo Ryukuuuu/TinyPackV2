@@ -6,7 +6,9 @@ import pt.isec.pa.tinypac.model.data.entities.Ghosts.Command.Evolve;
 import pt.isec.pa.tinypac.model.data.entities.Ghosts.Command.UndoEvolve;
 import pt.isec.pa.tinypac.utils.Position;
 
-public class GhostManager {
+import java.io.Serializable;
+
+public class GhostManager  implements Serializable {
     private Ghost ghost;
     private CommandManager cm;
 

@@ -56,7 +56,6 @@ public class PauseUI extends BorderPane {
 
     private void registerHandlers(){
         continueBtn.setOnAction(event->{
-            System.out.println("EVENT");
             modelManager.pauseGame(false);
         });
         exitBtn.setOnAction(evt->{
@@ -66,15 +65,22 @@ public class PauseUI extends BorderPane {
             Platform.runLater(this::createUI);
         });
         modelManager.addPropertyChangeListenner(ModelManager.PROP_STATE,evt->{
-            update();
+            Platform.runLater(this::update);
         });
     }
 
     private void update(){
-        if(modelManager.getState() != GameState.PAUSE_GAME){
-            this.setVisible(false);
-            return;
+        this.getChildren().clear();
+        setVisible(modelManager.getState() == GameState.PAUSE_GAME);
+        if(isVisible()){
+            setManaged(true);
+            setDisable(false);
+            requestFocus();
         }
-        this.setVisible(true);
+        else{
+            setManaged(false);
+            setDisable(true);
+            setFocused(false);
+        }
     }
 }

@@ -2,7 +2,9 @@ package pt.isec.pa.tinypac.model.data.blocks;
 
 import pt.isec.pa.tinypac.model.data.maze.Element;
 
-public class FruitSpawn extends Element {
+import java.io.Serializable;
+
+public class FruitSpawn extends Element  implements Serializable {
     private final char symbol='F';
 
     private boolean spawned=false;

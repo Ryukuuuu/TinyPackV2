@@ -2,7 +2,9 @@ package pt.isec.pa.tinypac.model.data.blocks;
 
 import pt.isec.pa.tinypac.model.data.maze.Element;
 
-public class PacManSpawn extends Element {
+import java.io.Serializable;
+
+public class PacManSpawn extends Element  implements Serializable {
     private final char symbol='M';
     public PacManSpawn(){super();}
     @Override

@@ -41,18 +41,10 @@ public class StartMenu extends BorderPane {
         this.setCenter(top5);
     }
 
-    private void createGameUI(){
-        modelManager.start();
-        game = new gameUI(modelManager);
-        game.setVisible(true);
-        BackgroundFill backgroundFill = new BackgroundFill(Color.BLACK,null,null);
-        game.setBackground(new Background(backgroundFill));
-        this.setCenter(game);
-    }
-
     private void registerHandles(){
         btnStart.setOnAction(event ->{
-            createGameUI();
+            this.getChildren().clear();
+            modelManager.start();
         });
         btnTop5.setOnAction(event -> {
             this.getChildren().clear();

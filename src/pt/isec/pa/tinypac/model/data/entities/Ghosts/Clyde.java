@@ -6,9 +6,10 @@ import pt.isec.pa.tinypac.model.data.maze.Element;
 import pt.isec.pa.tinypac.utils.Calculator;
 import pt.isec.pa.tinypac.utils.Position;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Clyde extends Ghost{
+public class Clyde extends Ghost implements Serializable {
     private final char symbol='c';
 
     public Clyde(Environment environment, int y, int x){super(environment,(Element) environment.getElement(y,x));}

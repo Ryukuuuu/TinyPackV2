@@ -1,6 +1,7 @@
 package pt.isec.pa.tinypac.model.data;
 
 import pt.isec.pa.tinypac.model.data.Environment;
+
 import pt.isec.pa.tinypac.model.data.blocks.*;
 import pt.isec.pa.tinypac.model.data.entities.Ghosts.Blinky;
 import pt.isec.pa.tinypac.model.data.entities.Ghosts.Clyde;
@@ -15,9 +16,10 @@ import pt.isec.pa.tinypac.utils.Position;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Scanner;
 
-public class EnvironmentManager {
+public class EnvironmentManager implements Serializable {
         private static final String FILE_PATH = "src/pt/isec/pa/tinypac/utils/level";
         final String PATH_TOP5="src/pt/isec/pa/tinypac/utils/top5.txt";
         private int currentLevel=1;
@@ -71,6 +73,7 @@ public class EnvironmentManager {
         public int getLives(){return lives;}
         public long getCurrentTime(){return runTime;}
         public int getLevel(){return currentLevel;}
+        public int getScore(){return score;}
 
         private String createPath(int level){
             String path = FILE_PATH;

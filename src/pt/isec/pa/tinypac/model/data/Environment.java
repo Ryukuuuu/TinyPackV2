@@ -10,10 +10,11 @@ import pt.isec.pa.tinypac.model.data.maze.Maze;
 import pt.isec.pa.tinypac.utils.Calculator;
 import pt.isec.pa.tinypac.utils.Position;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Environment {
+public class Environment implements Serializable {
     private int height,width;
     private int score=0;
     private long lastBallEatenTimer;

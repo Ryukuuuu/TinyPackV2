@@ -5,9 +5,10 @@ import pt.isec.pa.tinypac.model.data.maze.Element;
 import pt.isec.pa.tinypac.utils.Calculator;
 import pt.isec.pa.tinypac.utils.Position;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class GhostWithObjective extends Ghost{
+public abstract class GhostWithObjective extends Ghost implements Serializable {
 
     private String[] objectives;
     private final double tolerance=0.75;

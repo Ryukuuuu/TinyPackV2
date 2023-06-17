@@ -3,7 +3,9 @@ package pt.isec.pa.tinypac.model.fsm.states;
 import pt.isec.pa.tinypac.model.data.EnvironmentManager;
 import pt.isec.pa.tinypac.model.fsm.GameContext;
 
-abstract public class GameStateAdapter implements IGameState{
+import java.io.Serializable;
+
+abstract public class GameStateAdapter implements IGameState, Serializable {
 
     protected GameContext context;
     protected EnvironmentManager environmentManager;

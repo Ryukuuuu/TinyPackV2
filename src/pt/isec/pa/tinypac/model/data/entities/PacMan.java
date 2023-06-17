@@ -7,7 +7,9 @@ import pt.isec.pa.tinypac.model.data.maze.Element;
 import pt.isec.pa.tinypac.utils.Calculator;
 import pt.isec.pa.tinypac.utils.Position;
 
-public class PacMan extends Entity{
+import java.io.Serializable;
+
+public class PacMan extends Entity implements Serializable {
     private final char symbol='C';
     private boolean alive=true;
 

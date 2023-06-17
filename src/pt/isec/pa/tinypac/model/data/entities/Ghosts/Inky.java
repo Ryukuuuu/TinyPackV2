@@ -5,10 +5,11 @@ import pt.isec.pa.tinypac.model.data.maze.Element;
 import pt.isec.pa.tinypac.utils.Calculator;
 import pt.isec.pa.tinypac.utils.Position;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class Inky extends GhostWithObjective{
+public class Inky extends GhostWithObjective  implements Serializable {
     private final char symbol='I';
 
     private final String[] objectives= {"dr","dl","tr","tl"};

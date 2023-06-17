@@ -1,9 +1,10 @@
 package pt.isec.pa.tinypac.model.data.entities.Ghosts.Command;
 
+import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-public class CommandManager {
+public class CommandManager  implements Serializable {
     private Deque<ICommand> history;
     private Deque<ICommand> redoCmds;
 

@@ -3,16 +3,19 @@ package pt.isec.pa.tinypac.model;
 import pt.isec.pa.tinypac.gameEngine.GameEngine;
 import pt.isec.pa.tinypac.gameEngine.IGameEngine;
 import pt.isec.pa.tinypac.gameEngine.IGameEngineEvolve;
+import pt.isec.pa.tinypac.model.data.EnvironmentManager;
 import pt.isec.pa.tinypac.model.fsm.GameContext;
 import pt.isec.pa.tinypac.model.fsm.states.GameState;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.*;
 
 public class ModelManager implements IGameEngineEvolve {
+    public static final String SAVEPATH = "src/pt/isec/pa/tinypac/utils/save";
     public static final String PROP_STATE = "_state_";
     public static final String PROP_UIUPDATE = "_ui_";
-    public static final String PROP_PACMAN_DEAD = "_pacman_";
+    public static final String PROP_START = "_start_";
     private final GameContext fsm;
     GameEngine gameEngine;
     PropertyChangeSupport pcs;
@@ -36,6 +39,7 @@ public class ModelManager implements IGameEngineEvolve {
 
 
     public void start(){
+        pcs.firePropertyChange(PROP_START,null,null);
         gameEngine.start(100);
     }
     public void stop(){gameEngine.stop();}
@@ -46,8 +50,9 @@ public class ModelManager implements IGameEngineEvolve {
     public void changePacmanRotation(int rotation){fsm.changePacmanRotation(rotation);}
     public void gotInput(boolean input){fsm.gotInput(input);}
     public void pauseGame(boolean pause){
-        System.out.println("MODELMANAGER");
-        fsm.pausedGame(pause);}
+        if(fsm.pausedGame(pause))
+            pcs.firePropertyChange(PROP_STATE,null,null);
+    }
     public int getLives(){ return fsm.getLives();}
     public char[][] getMaze(){return fsm.getMaze();}
     public boolean getSpawnedFruit(){return fsm.getSpawnedFruit();}
@@ -55,6 +60,9 @@ public class ModelManager implements IGameEngineEvolve {
     public long getCurrentTime(){return fsm.getCurrentTime();}
     public String getCurrentTimeStr(){return Long.toString(fsm.getCurrentTime());}
     public int getLevel(){return fsm.getLevel();}
+    public int getScore(){return fsm.getScore();}
+
+
     @Override
     public void evolve(IGameEngine gameEngine,long currentTime){
         fsm.evolve(currentTime);

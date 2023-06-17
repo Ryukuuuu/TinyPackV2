@@ -23,6 +23,7 @@ public class MazeUI extends BorderPane {
 
     public MazeUI(ModelManager modelManager){
         this.modelManager=modelManager;
+
         createViews();
         registerHandlers();
     }
@@ -140,15 +141,24 @@ public class MazeUI extends BorderPane {
             Platform.runLater(this::showUI);
         });
         modelManager.addPropertyChangeListenner(ModelManager.PROP_STATE,evt -> {
-            update();
+            Platform.runLater(this::update);
         });
     }
 
     private void update(){
-        if(modelManager.getState() != GameState.PAUSE_GAME){
-            this.setVisible(true);
-            return;
+        this.getChildren().clear();
+        setVisible(modelManager.getState() != GameState.PAUSE_GAME && modelManager.getState() != GameState.END_GAME);
+
+        if(isVisible()){
+            setManaged(true);
+            setDisable(false);
+            requestFocus();
         }
-        this.setVisible(false);
+        else{
+            setManaged(false);
+            setDisable(true);
+            setFocused(false);
+        }
+
     }
 }

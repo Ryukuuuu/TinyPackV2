@@ -8,9 +8,10 @@ import pt.isec.pa.tinypac.model.data.maze.IMazeElement;
 import pt.isec.pa.tinypac.utils.Calculator;
 import pt.isec.pa.tinypac.utils.Position;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Ghost extends Entity {
+public abstract class Ghost extends Entity  implements Serializable {
 
     private final char scaredGhost = 'S';   //if vulnerable==true use this
     private boolean active=false;

@@ -10,8 +10,6 @@ import pt.isec.pa.tinypac.model.fsm.states.GameState;
 public class gameUI extends BorderPane {
     ModelManager modelManager;
     StackPane stackPane;
-    BorderPane maze;
-    BorderPane pause;
     public gameUI(ModelManager modelManager){
         this.modelManager=modelManager;
         //maze = new mazeUI(modelManager);
@@ -27,6 +25,7 @@ public class gameUI extends BorderPane {
                 new PauseUI(modelManager)
         );
         stackPane.setAlignment(Pos.CENTER);
+        stackPane.setVisible(true);
         this.setCenter(stackPane);
     }
 
@@ -48,7 +47,6 @@ public class gameUI extends BorderPane {
             }
         });
     }
-
     private void update(){
         if(modelManager.getState() != GameState.END_GAME){
             setManaged(true);

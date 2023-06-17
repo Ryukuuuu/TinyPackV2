@@ -4,7 +4,9 @@ import pt.isec.pa.tinypac.model.data.Environment;
 import pt.isec.pa.tinypac.model.data.maze.Element;
 import pt.isec.pa.tinypac.model.data.maze.IMazeElement;
 
-public abstract class Entity extends Element {
+import java.io.Serializable;
+
+public abstract class Entity extends Element implements Serializable {
     protected Environment environment;
     private Element inventory;
 
